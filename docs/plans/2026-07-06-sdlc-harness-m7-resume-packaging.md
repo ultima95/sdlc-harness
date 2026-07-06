@@ -190,7 +190,7 @@ git commit -m "feat: implement /sdlc resume (re-enter a paused task at its phase
   "name": "sdlc-harness",
   "description": "A portable, gated software development life cycle for AI coding agents: understand the codebase, then run tasks through intake, spec & plan, implement, test, review, and ship.",
   "version": "0.1.0",
-  "author": { "name": "gtgsoft" },
+  "author": { "name": "ultima95" },
   "keywords": ["sdlc", "workflow", "agent", "review", "lifecycle", "code-review"]
 }
 ```
@@ -200,8 +200,8 @@ git commit -m "feat: implement /sdlc resume (re-enter a paused task at its phase
 ```json
 {
   "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
-  "name": "gtgsoft",
-  "owner": { "name": "gtgsoft" },
+  "name": "ultima95",
+  "owner": { "name": "ultima95" },
   "plugins": [
     {
       "name": "sdlc-harness",
@@ -273,7 +273,7 @@ npx skills add <owner>/<repo>
 Or as a Claude Code plugin marketplace:
 ```
 /plugin marketplace add <owner>/<repo>
-/plugin install sdlc-harness@gtgsoft
+/plugin install sdlc-harness@ultima95
 ```
 
 Restart your Claude Code session so the `sdlc` skill is picked up.
@@ -406,7 +406,7 @@ Run: `git status --short` (expect empty; `.tmp-test/` is gitignored).
 
 Record in the report that install + resume are validated by a human:
 - `npx skills add <owner>/<repo>` (or `/plugin marketplace add <owner>/<repo>` then
-  `/plugin install sdlc-harness@gtgsoft`) installs the `sdlc` skill; restart; `/sdlc` is available.
+  `/plugin install sdlc-harness@ultima95`) installs the `sdlc` skill; restart; `/sdlc` is available.
 - Start a task, stop mid-phase, then `/sdlc resume` re-enters at the saved phase using
   `state.json` + `progress.md`.
 These need a live Claude Code session and cannot run under `npm test`.

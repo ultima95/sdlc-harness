@@ -70,7 +70,7 @@ npx skills add ultima95/sdlc-harness
 
 ```text
 /plugin marketplace add ultima95/sdlc-harness
-/plugin install sdlc-harness@gtgsoft
+/plugin install sdlc-harness@ultima95
 ```
 
 Then **restart Claude Code** so the `sdlc` skill is picked up. Requires Claude Code + **Node.js ≥ 18**.
