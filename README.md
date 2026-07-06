@@ -143,6 +143,6 @@ npm test    # runs the Node unit tests for the bundled scripts (52, zero deps)
 
 ## 📐 Design
 
-This repo carries its own provenance — the full design spec and every milestone's implementation plan live under [`docs/`](docs/) ([specs](docs/specs/) · [plans](docs/plans/)). Built brainstorm → spec → per‑milestone plans → subagent‑driven execution with two‑stage review.
+Built the disciplined way — brainstorm → spec → per‑milestone plans → subagent‑driven execution with two‑stage review, across **7 tested milestones**, each merged green.
 
 <div align="center"><sub>Built with Claude Code · gated, tested, portable.</sub></div>

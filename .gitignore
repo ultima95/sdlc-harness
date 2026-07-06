@@ -3,3 +3,5 @@ node_modules/
 .sdlc/
 # Scratch used by tests:
 .tmp-test/
+# Design docs (specs / plans) — kept local, not published:
+docs/
