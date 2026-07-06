@@ -1,0 +1,12 @@
+{
+  "overview": "A tiny Node CLI that greets a name.",
+  "architecture": {
+    "summary": "Single entry point delegating to a greet helper.",
+    "boundaries": ["index ⟷ greet"],
+    "components": [{ "name": "index", "role": "CLI entry" }, { "name": "greet", "role": "greeting helper" }]
+  },
+  "modules": [
+    { "path": "src/index.js", "purpose": "CLI entry point" },
+    { "path": "src/greet.js", "purpose": "greeting function" }
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "stack": ["Node.js (ESM)"],
+  "conventions": ["ES modules only"],
+  "runbook": { "build": "npm run build", "test": "npm test", "run": "node src/index.js", "notes": ["requires Node >= 18"] },
+  "risks": [{ "area": "input", "note": "no validation on argv" }]
+}

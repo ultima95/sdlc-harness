@@ -1,0 +1,10 @@
+{
+  "name": "sample-app",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "echo build",
+    "test": "node --test",
+    "start": "node src/index.js"
+  }
+}
