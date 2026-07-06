@@ -44,8 +44,10 @@ Create a new task folder for an issue/bug/feature.
    `<taskDir>`). This is an interactive dialogue with the developer.
 7. Run **Phase 2 — Spec & Plan**: follow `<SKILL_DIR>/phases/spec-plan.md` (pass
    `<taskDir>`), ending at the spec gate.
-8. After the gate is approved the task is at phase `implement`. Implement → Test →
-   Review → Ship arrive in later milestones; stop there for now.
+8. After the gate is approved (phase `implement`), run **Phase 3 — Implement**:
+   follow `<SKILL_DIR>/phases/implement.md` (pass `<taskDir>`), then **Phase 4 — Test**:
+   follow `<SKILL_DIR>/phases/test.md`. Review → Ship arrive in later milestones;
+   stop at phase `review` for now.
 
 ### status
 Show all tasks and their current phase/gate state.
