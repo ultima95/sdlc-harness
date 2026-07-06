@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
+  "name": "gtgsoft",
+  "owner": { "name": "gtgsoft" },
+  "plugins": [
+    {
+      "name": "sdlc-harness",
+      "source": ".",
+      "description": "Portable gated SDLC for AI coding agents (understand -> intake -> spec&plan -> implement -> test -> review -> ship)."
+    }
+  ]
+}
