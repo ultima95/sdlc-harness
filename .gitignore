@@ -1,0 +1,6 @@
+node_modules/
+.superpowers/
+# Harness runtime data is per-target-repo, never committed in this source repo:
+.sdlc/
+# Scratch used by tests:
+.tmp-test/

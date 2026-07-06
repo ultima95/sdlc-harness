@@ -1,0 +1,11 @@
+{
+  "name": "sdlc-harness",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Portable SDLC harness for AI coding agents, shipped as a Claude Code skill.",
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "test": "node --test"
+  }
+}
