@@ -259,4 +259,4 @@ The harness is markdown skills + bundled Node scripts, so "tests" are behavior c
 4. Inner-loop phases 3–4 (Implement, Test) + implement⇄test loop.
 5. Review phase: inline `reviewer` fan-out + adversarial `verifier` + `review.mjs` (dedupe/verdict/render) + review gate.
 6. Ship phase: commit/PR (config `ship.mode`) + refresh Project Memory + `progress.mjs` logger + task → done.
-7. Resume/status, config wiring, fixtures + dogfood smoke checks, `marketplace.json`.
+7. `/sdlc resume` (`resume.mjs`) + `.claude-plugin/{plugin,marketplace}.json` packaging (installable via `npx skills` and the Claude Code plugin marketplace) + README + logged cleanups.
