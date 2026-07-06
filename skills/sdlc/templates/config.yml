@@ -23,3 +23,5 @@ memory:
 review:
   dimensions: [correctness, security, tests, conventions]
   verify: adversarial     # spawn verifiers to refute findings
+ship:
+  mode: commit            # commit | pr  (open a PR with gh, or leave commits for the dev)
