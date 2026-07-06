@@ -39,10 +39,13 @@ Create a new task folder for an issue/bug/feature.
    (omit `<track>` to accept the type default).
 4. Report the created `taskId`, its `track`, and path
    (`.sdlc/tasks/<YYYYMMDD>/<slug>/`).
-5. Tell the user the task skeleton (`spec.md`, `progress.md`, `review.md`,
-   `state.json`) is ready at phase `intake`. Driving the interactive phases
-   (Intake → Spec & Plan → Implement → Test → Review → Ship, scaled by track)
-   is added in later milestones.
+5. The created task folder is `<taskDir>` (`.sdlc/tasks/<YYYYMMDD>/<slug>/`), at phase `intake`.
+6. Run **Phase 1 — Intake & Clarify**: follow `<SKILL_DIR>/phases/intake.md` (pass
+   `<taskDir>`). This is an interactive dialogue with the developer.
+7. Run **Phase 2 — Spec & Plan**: follow `<SKILL_DIR>/phases/spec-plan.md` (pass
+   `<taskDir>`), ending at the spec gate.
+8. After the gate is approved the task is at phase `implement`. Implement → Test →
+   Review → Ship arrive in later milestones; stop there for now.
 
 ### status
 Show all tasks and their current phase/gate state.
