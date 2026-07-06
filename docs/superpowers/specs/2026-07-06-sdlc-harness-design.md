@@ -115,6 +115,10 @@ Run once per repo, refreshable. Produces **Project Memory**.
 
 **Project Memory artifacts:** `architecture.md` (system map, boundaries), `modules.md` (module index + purpose), `conventions.md` (style, patterns, idioms), `glossary.md` (domain terms), `runbook.md` (how to build/run/test), `risks.md` (fragile areas, gotchas), `index.md` (entry point / TOC).
 
+### 5.1 Consuming memory — index-first and lazy
+
+Phases and agents treat `index.md` as the **entry point** and read specific memory files **only when a task actually needs them** — never bulk-loading all of `.sdlc/memory/` into context. Typical pattern: read `index.md` for orientation; during Spec & Plan, load `modules.md` + `risks.md` for the affected areas; load `conventions.md` when writing code; `runbook.md` when running or testing. This keeps context lean and lets Project Memory scale with the codebase. Every phase guide states which memory file(s) it may load and when.
+
 Every inner-loop phase reads from Project Memory. Ship updates it so it never goes stale.
 
 ## 6. Inner loop — per task
