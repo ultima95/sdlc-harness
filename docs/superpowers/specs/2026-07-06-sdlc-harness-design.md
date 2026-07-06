@@ -235,11 +235,13 @@ memory:
 review:
   dimensions: [correctness, security, tests, conventions]
   verify: adversarial     # spawn verifiers to refute findings
+ship:
+  mode: commit            # commit | pr  (open a PR with gh, or leave commits for the dev)
 ```
 
 ## 10. Testing the harness
 
-The harness is markdown skills + bundled JS workflows, so "tests" are behavior checks:
+The harness is markdown skills + bundled Node scripts, so "tests" are behavior checks:
 - A small `fixtures/` sample repo committed in the source repo for **dogfooding**.
 - Smoke checks: `/sdlc init` produces memory; a sample `/sdlc task` walks the phases; `state.json` transitions correctly; gates stop; `/sdlc resume` restores mid-phase; loop limits escalate as configured.
 - Each skill/guide validated with the `writing-skills` discipline.
@@ -248,7 +250,7 @@ The harness is markdown skills + bundled JS workflows, so "tests" are behavior c
 - Task source formats for `/sdlc task`: free-text request vs. issue reference (e.g. GitHub) — how far to support in v1.
 - Slug generation rules and same-day collision handling (`-2` suffix confirmed; who generates the slug — conductor from the request title).
 - Exact shape of the optional graph index and which MCP it targets when `memory.graph` is enabled.
-- Whether Ship opens a PR or only commits by default (config-driven).
+- Ship PR-vs-commit: **resolved** — config-driven via `ship.mode` (`commit` default | `pr`).
 
 ## 12. Milestones (for the implementation plan)
 1. Skill skeleton: `sdlc` SKILL.md dispatcher + `.sdlc/` scaffolding on `/sdlc init`.
@@ -256,5 +258,5 @@ The harness is markdown skills + bundled JS workflows, so "tests" are behavior c
 3. Inner-loop phases 1–2 (Intake, Spec & Plan) + spec gate + `spec.md` template.
 4. Inner-loop phases 3–4 (Implement, Test) + implement⇄test loop.
 5. Review phase: inline `reviewer` fan-out + adversarial `verifier` + `review.mjs` (dedupe/verdict/render) + review gate.
-6. Ship phase + memory refresh.
+6. Ship phase: commit/PR (config `ship.mode`) + refresh Project Memory + `progress.mjs` logger + task → done.
 7. Resume/status, config wiring, fixtures + dogfood smoke checks, `marketplace.json`.
