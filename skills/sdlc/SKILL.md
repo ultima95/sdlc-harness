@@ -1,6 +1,6 @@
 ---
 name: sdlc
-description: Run a gated software development life cycle for a repo. Use for `/sdlc init` (understand the codebase and scaffold project memory), `/sdlc task "<request>"` (start an issue/bug/feature through spec→implement→test→review→ship), `/sdlc status`, and `/sdlc resume`. Triggers on "sdlc", "run the lifecycle", "start a task", "sdlc init/status".
+description: Run a gated software development life cycle for a repo. Use for `/sdlc init` (understand the codebase and scaffold project memory), `/sdlc task "<request>"` (start an issue/bug/feature through spec→implement→test→review→ship), `/sdlc status`, `/sdlc memory-refresh`, and `/sdlc resume`. Triggers on "sdlc", "run the lifecycle", "start a task", "sdlc init/status".
 ---
 
 # SDLC Conductor
@@ -17,15 +17,14 @@ from the request) and follow the matching section. If none matches, run **status
 and show the available sub-commands.
 
 ### init
-Scaffold the harness data directory for this repo.
+Scaffold `.sdlc/`, then run Phase 0 to build Project Memory.
 
-1. Run: `node "<SKILL_DIR>/scripts/scaffold.mjs" "$(pwd)"`
-2. Report which files were created vs. skipped.
-3. Tell the user: Project Memory files under `.sdlc/memory/` are empty stubs.
-   Populating them (Phase 0 investigation) is added in a later milestone; for now
-   they are placeholders they may edit by hand.
-4. Do **not** overwrite an existing config unless the user explicitly asks; then
-   re-run with `--force`.
+1. Run: `node "<SKILL_DIR>/scripts/scaffold.mjs" "$(pwd)"` and report created vs. skipped.
+2. Run **Phase 0 — understand the codebase**: follow `<SKILL_DIR>/phases/understand.md`
+   to fan out explorer subagents, merge their findings, and populate `.sdlc/memory/`.
+3. Report which memory files were populated and suggest the user skim
+   `.sdlc/memory/index.md`.
+4. Do **not** overwrite an existing config unless the user explicitly asks (`--force`).
 
 ### task
 Create a new task folder for an issue/bug/feature.
@@ -50,6 +49,10 @@ Show all tasks and their current phase/gate state.
 
 1. Run: `node "<SKILL_DIR>/scripts/status.mjs"` from the repo root (`$(pwd)`).
 2. Print the output verbatim.
+
+### memory-refresh
+Re-run Phase 0 to refresh Project Memory (e.g., after significant changes).
+Follow `<SKILL_DIR>/phases/understand.md`; it overwrites the memory files.
 
 ### resume
 Not implemented in this milestone. Tell the user resume arrives with the
