@@ -1,0 +1,25 @@
+# .sdlc/config.yml — SDLC harness configuration for this repo.
+project:
+  build: "echo 'set project.build in .sdlc/config.yml'"
+  test:  "echo 'set project.test in .sdlc/config.yml'"
+  lint:  "echo 'set project.lint in .sdlc/config.yml'"
+gates:
+  spec_plan: hard        # hard | soft | off
+  review:    hard        # hard | soft | off
+trust_level: normal      # strict | normal | trusted
+tracks:
+  default_by_type:       # auto-suggested track per task type (overridable at Intake)
+    feature:  full
+    refactor: full
+    bug:      fast
+    chore:    fast
+    # 'hotfix' track is selected explicitly for urgent work
+loops:
+  max_test: 3
+  max_review: 2
+memory:
+  graph:   auto          # auto | on | off (use a code-graph MCP if present)
+  refresh: on_ship       # on_ship | manual
+review:
+  dimensions: [correctness, security, tests, conventions]
+  verify: adversarial     # spawn verifiers to refute findings
