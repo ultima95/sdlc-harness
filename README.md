@@ -1,27 +1,53 @@
 # SDLC Harness
 
-A portable software development life cycle for AI coding agents, shipped as a
-single Claude Code skill. Phase 0 builds durable **Project Memory** from your
-codebase; a per-task inner loop then takes each issue/bug/feature through
-Intake → Spec & Plan → Implement → Test → Review → Ship with human gates.
+A portable, gated **software development life cycle for AI coding agents**, shipped as a
+single Claude Code skill (`sdlc`). It first **understands your codebase** (Project Memory),
+then drives each task through a repeatable, human-gated lifecycle.
 
-> Status: Milestone 1 — installable skill + data layer (`init`, `task`, `status`).
-> Lifecycle phases land in later milestones.
+## Lifecycle
+
+```
+/sdlc init         Phase 0 — investigate the repo -> .sdlc/memory/ (Project Memory)
+
+/sdlc task "..."   Intake & Clarify
+                     -> Spec & Plan        [gate: approve plan]
+                     -> Implement          (subagent-driven | inline)
+                     -> Test               (loops back to Implement until green)
+                     -> Review             [gate: approve to ship]  (fan-out + adversarial verify)
+                     -> Ship               (commit/PR, refresh memory) -> done
+```
+
+Tracks scale the loop by work size: **full** (feature), **fast** (bug/chore), **hotfix**
+(urgent — lighter gates, but a regression test is never skipped).
 
 ## Requirements
 - Claude Code
-- Node.js ≥ 18 (used by the harness's bundled scripts)
+- Node.js >= 18 (used by the harness's bundled scripts)
 
 ## Install
+
+Via the skills CLI (recommended):
 ```bash
 npx skills add <owner>/<repo>
 ```
-Then restart your Claude Code session so the `sdlc` skill is picked up.
+
+Or as a Claude Code plugin marketplace:
+```
+/plugin marketplace add <owner>/<repo>
+/plugin install sdlc-harness@gtgsoft
+```
+
+Restart your Claude Code session so the `sdlc` skill is picked up.
 
 ## Use
-- `/sdlc init` — scaffold `.sdlc/` (config + Project Memory stubs) in the current repo.
-- `/sdlc task "<request>"` — create a task folder at `.sdlc/tasks/<YYYYMMDD>/<slug>/`.
+- `/sdlc init` — investigate the codebase and build Project Memory in `.sdlc/memory/`.
+- `/sdlc task "<request>"` — take an issue/bug/feature from intake to shipped.
 - `/sdlc status` — list tasks and their phase/gate state.
+- `/sdlc resume [<YYYYMMDD>/<slug>]` — resume a paused task at its saved phase.
+- `/sdlc memory-refresh` — re-run Phase 0 to refresh Project Memory.
+
+Configuration lives in `.sdlc/config.yml` (build/test commands, gate strictness,
+track defaults, loop limits, review dimensions, ship mode).
 
 ## Development
 ```bash
