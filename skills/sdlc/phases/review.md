@@ -35,8 +35,8 @@ Memory (index-first, lazy): load `conventions.md` (for the conventions dimension
      On approval:
      `node "<SKILL_DIR>/scripts/set-state.mjs" "<taskDir>" gate review approved` then
      `node "<SKILL_DIR>/scripts/set-state.mjs" "<taskDir>" advance` (phase `review` → `ship`).
-7. Report the outcome (looped back to Implement, or gate approved → phase `ship`). Ship
-   arrives in a later milestone.
+7. Report the outcome (looped back to Implement, or gate approved → phase `ship`).
+   Continue with the Ship phase (`<SKILL_DIR>/phases/ship.md`).
 
 ## Notes
 - Only verified `real` findings loop back — refuted findings are dropped so plausible-but-wrong

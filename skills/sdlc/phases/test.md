@@ -15,7 +15,7 @@ isn't already clear from `.sdlc/config.yml`.
 3. If tests PASS: append a dated entry to `progress.md`, optionally reset the counter
    (`node "<SKILL_DIR>/scripts/loop.mjs" "<taskDir>" reset test`), then advance to
    Review: `node "<SKILL_DIR>/scripts/set-state.mjs" "<taskDir>" advance`
-   (phase `test` → `review`). Follow the Review phase (added in a later milestone).
+   (phase `test` → `review`). Follow the Review phase (`<SKILL_DIR>/phases/review.md`).
 4. If tests FAIL:
    - Bump the counter: `node "<SKILL_DIR>/scripts/loop.mjs" "<taskDir>" bump test`
      (prints the new count).

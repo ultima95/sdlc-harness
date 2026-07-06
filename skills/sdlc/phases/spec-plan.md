@@ -27,8 +27,8 @@ it informs the approach. Load only what you need.
    `node "<SKILL_DIR>/scripts/set-state.mjs" "<taskDir>" gate spec_plan approved`
    then `node "<SKILL_DIR>/scripts/set-state.mjs" "<taskDir>" advance`
    (phase `spec_plan` → `implement`).
-6. Report that the plan is approved and the task is at phase `implement`. Implement,
-   Test, Review, and Ship arrive in later milestones — stop here for now.
+6. Report that the plan is approved and the task is at phase `implement`. Continue with
+   the Implement phase (`<SKILL_DIR>/phases/implement.md`).
 
 ## Notes
 - The gate reviews the whole `spec.md` (Spec + Plan) at once.
