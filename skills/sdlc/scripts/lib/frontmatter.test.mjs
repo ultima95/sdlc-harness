@@ -32,3 +32,8 @@ test('inserts a missing field into the front-matter', () => {
 test('throws when there is no front-matter', () => {
   assert.throws(() => setFrontMatterField('no front-matter here', 'x', 'y'), /front-matter/);
 });
+
+test('setFrontMatterField inserts a value containing $ literally', () => {
+  const out = setFrontMatterField(md, 'status', 'a$1b');
+  assert.match(out, /^status: a\$1b$/m);
+});

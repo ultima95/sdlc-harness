@@ -5,8 +5,9 @@ export function setFrontMatterField(md, key, value) {
   if (!m) throw new Error('no front-matter block found');
   const block = m[1];
   const re = new RegExp(`^(${key}:)[^\\n]*$`, 'm');
+  const line = `${key}: ${value}`;
   const newBlock = re.test(block)
-    ? block.replace(re, `${key}: ${value}`)
-    : `${block}\n${key}: ${value}`;
+    ? block.replace(re, () => line)
+    : `${block}\n${line}`;
   return md.replace(block, newBlock);
 }
