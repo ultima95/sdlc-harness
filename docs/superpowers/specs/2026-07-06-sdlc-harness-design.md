@@ -148,6 +148,15 @@ Not every task deserves the full gated loop. Each task carries a **track** that 
 
 **Default track by type** (set in `config.yml`, overridable per task): `feature → full`, `refactor → full`, `bug → fast`, `chore → fast`. The `hotfix` track is selected explicitly for urgent work (typically `type: bug`). The conductor proposes the default at Intake and asks for confirmation before proceeding.
 
+### 6.2 Implement modes — subagent-driven vs inline
+
+The Implement phase offers two execution modes; the conductor asks which at the start of Implement (unless configured):
+
+- **Subagent-driven (recommended)** — each ordered step of the plan (`spec.md` Part 2) is delegated to a *fresh subagent* that implements just that step, following the same discipline we use to build the harness (TDD where sensible, self-review, commit). The conductor reviews between steps and keeps its own context lean. Best for multi-step work and larger changes.
+- **Inline** — the conductor implements the steps directly in the session. Best for tiny changes (a one-line fix) where subagent overhead isn't worth it.
+
+Default: subagent-driven; `hotfix`/tiny work may go inline. The choice is recorded in `progress.md`. Either way, the Implement→Test loop and the invariant "a test proves the change" hold.
+
 ## 7. State, gates, and error handling
 
 ### 7.1 `state.json` — the resume brain
