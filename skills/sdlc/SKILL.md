@@ -46,9 +46,9 @@ Create a new task folder for an issue/bug/feature.
    `<taskDir>`), ending at the spec gate.
 8. After the gate is approved (phase `implement`), run **Phase 3 — Implement**
    (`<SKILL_DIR>/phases/implement.md`), **Phase 4 — Test** (`<SKILL_DIR>/phases/test.md`),
-   then **Phase 5 — Review** (`<SKILL_DIR>/phases/review.md`), ending at the review gate.
-   After the review gate is approved the task is at phase `ship`; Ship arrives in a
-   later milestone.
+   **Phase 5 — Review** (`<SKILL_DIR>/phases/review.md`, review gate), then
+   **Phase 6 — Ship** (`<SKILL_DIR>/phases/ship.md`). Ship commits or opens a PR
+   (`ship.mode`), refreshes Project Memory, and moves the task to `done`.
 
 ### status
 Show all tasks and their current phase/gate state.
