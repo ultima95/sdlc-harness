@@ -61,8 +61,21 @@ Re-run Phase 0 to refresh Project Memory (e.g., after significant changes).
 Follow `<SKILL_DIR>/phases/understand.md`; it overwrites the memory files.
 
 ### resume
-Not implemented in this milestone. Tell the user resume arrives with the
-inner-loop phases in a later milestone, and point them at `/sdlc status`.
+Resume a paused task from its saved state.
+
+1. Determine the task: if the user gave `<YYYYMMDD>/<slug>`, use it; otherwise run
+   `node "<SKILL_DIR>/scripts/resume.mjs" "$(pwd)"` to list resumable tasks (phase ≠ done)
+   and pick one (ask the user if there are several).
+2. Read its state: `node "<SKILL_DIR>/scripts/resume.mjs" "$(pwd)" "<taskId>"` (prints
+   `state.json`); note the current `phase`.
+3. Recover context: read the task's `progress.md` (and `spec.md`) under
+   `.sdlc/tasks/<taskId>/`.
+4. Re-enter that phase by following its guide (passing the task folder):
+   `intake`→`phases/intake.md`, `spec_plan`→`phases/spec-plan.md`,
+   `implement`→`phases/implement.md`, `test`→`phases/test.md`,
+   `review`→`phases/review.md`, `ship`→`phases/ship.md`. If `phase` is `done`, tell the
+   user the task is already complete.
+5. Continue the lifecycle from there.
 
 ## Notes
 - All commands operate on the current working directory as the project root.
