@@ -46,8 +46,9 @@ flowchart LR
     T -->|"❌ fail (bounded)"| IM
     T --> RV["Review<br/>(fan-out + verify)"]
     RV -->|"real findings"| IM
-    RV -->|"🚦 approve to ship"| SH["Ship"]
-    SH --> DONE(["✅ done"])
+    RV -->|"🚦 approve to ship"| SH["Ship<br/>(branch · push · PR)"]
+    SH -->|"awaiting merge"| CL["Cleanup<br/>(/sdlc cleanup)"]
+    CL --> DONE(["✅ done"])
   end
 
   M -. "reads (index-first)" .-> IN
@@ -85,6 +86,7 @@ Then **restart Claude Code** so the `sdlc` skill is picked up. Requires Claude C
 | `/sdlc task "<request>"` | 🎫 Take an issue / bug / feature from intake all the way to shipped. |
 | `/sdlc status` | 📋 List tasks and their current phase / gate state. |
 | `/sdlc resume [<YYYYMMDD>/<slug>]` | ⏯️ Resume a paused task at its saved phase. |
+| `/sdlc cleanup [<YYYYMMDD>/<slug>]` | 🧹 After a merged PR: verify the merge, delete the branch, return to the base branch, and close the task. |
 | `/sdlc memory-refresh` | ♻️ Re‑run Phase 0 to refresh Project Memory. |
 
 ---
@@ -129,6 +131,7 @@ skills/sdlc/
 - **`loops`** — `max_test`, `max_review` (bounded fix‑loops)
 - **`review`** — `dimensions` + `verify: adversarial`
 - **`ship`** — `mode: commit | pr`
+- **`git`** — feature-branch lifecycle: `branch` (create `<type>/<slug>` at Implement), `base` (`auto` or an explicit branch), `push`, `cleanup` (`on_merge | off`), `delete_remote`
 - **`memory`** — `graph: auto|on|off`, `refresh: on_ship|manual`
 
 ---
