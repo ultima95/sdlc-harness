@@ -89,3 +89,52 @@ function unquote(x) {
 export function getValue(model, keyPath) {
   return model.leaves.has(keyPath) ? model.leaves.get(keyPath).value : undefined;
 }
+
+// --- Validator (doctor). Static only — no file IO, no environment probing. ---
+export function validate(model) {
+  const results = [];
+  for (const key of Object.keys(SCHEMA)) {
+    if (!model.leaves.has(key)) {
+      results.push({ level: 'err', key, value: undefined, note: 'required key missing' });
+      continue;
+    }
+    results.push(checkValue(key, model.leaves.get(key).value, SCHEMA[key]));
+  }
+  for (const key of model.leaves.keys()) {
+    if (!SCHEMA[key]) {
+      results.push({ level: 'err', key, value: model.leaves.get(key).value, note: 'unknown key (not in schema)' });
+    }
+  }
+  return results;
+}
+
+function checkValue(key, value, spec) {
+  switch (spec.type) {
+    case 'enum':
+      return spec.allowed.includes(value)
+        ? r('ok', key, value)
+        : r('err', key, value, `not in {${spec.allowed.join(', ')}}`);
+    case 'bool':
+      return typeof value === 'boolean'
+        ? r('ok', key, value)
+        : r('err', key, value, 'must be true or false');
+    case 'int':
+      return Number.isInteger(value) && value > 0
+        ? r('ok', key, value)
+        : r('err', key, value, 'must be a positive integer');
+    case 'list':
+      return Array.isArray(value) && value.length > 0
+        ? r('ok', key, value)
+        : r('warn', key, value, 'list is empty');
+    case 'string':
+      return spec.placeholder && spec.placeholder.test(String(value))
+        ? r('warn', key, value, 'still the scaffold placeholder')
+        : r('ok', key, value);
+    default:
+      return r('ok', key, value);
+  }
+}
+
+function r(level, key, value, note) {
+  return { level, key, value, note: note || '' };
+}
