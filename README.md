@@ -145,6 +145,18 @@ npm test    # runs the Node unit tests for the bundled scripts (60, zero deps)
 
 ---
 
+## 🔖 Versioning
+
+Follows [Semantic Versioning](https://semver.org/) — `MAJOR.MINOR.PATCH`. Bump the version in **both** `package.json` and `.claude-plugin/plugin.json`:
+
+| Bump | Change | e.g. `0.2.1` → | When |
+| --- | --- | --- | --- |
+| **patch** | last digit (`+0.0.1`) | `0.2.2` | backward‑compatible bug fix |
+| **minor** | middle digit (`+0.1.0`, patch resets) | `0.3.0` | backward‑compatible feature |
+| **major** | first digit (`+1.0.0`, rest reset) | `1.0.0` | breaking change |
+
+---
+
 ## 📐 Design
 
 Built the disciplined way — brainstorm → spec → per‑milestone plans → subagent‑driven execution with two‑stage review, across **7 tested milestones**, each merged green.
