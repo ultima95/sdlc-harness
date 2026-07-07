@@ -11,7 +11,7 @@ Understand the codebase once, then drive every task through a repeatable, human�
 ![node](https://img.shields.io/badge/node-%E2%89%A5%2018-339933?logo=nodedotjs&logoColor=white)
 ![dependencies](https://img.shields.io/badge/dependencies-zero-0aa)
 ![install](https://img.shields.io/badge/install-npx%20skills-111)
-![version](https://img.shields.io/badge/version-0.2.1-informational)
+![version](https://img.shields.io/badge/version-0.3.0-informational)
 
 </div>
 
@@ -114,7 +114,7 @@ The `track` scales *which phases run* and *how heavy the gates are* — auto‑s
 
 ```text
 skills/sdlc/
-├── SKILL.md              # conductor: init · task · status · config · resume · memory-refresh
+├── SKILL.md              # conductor: init · task · status · config · resume · cleanup · backlog · memory-refresh
 ├── phases/               # understand · intake · spec-plan · implement · test · review · ship
 ├── agents/               # explorer · reviewer · verifier  (inline subagent roles)
 ├── scripts/              # deterministic, unit-tested Node helpers (+ lib/)
@@ -129,6 +129,7 @@ skills/sdlc/
 
 - **`project`** — `build` / `test` / `lint` commands
 - **`gates`** — `spec_plan` & `review`: `hard | soft | off`
+- **`trust_level`** — `strict | normal | trusted`: how much confirmation Ship asks for before pushing / opening a PR
 - **`tracks.default_by_type`** — which track each task type starts on
 - **`loops`** — `max_test`, `max_review` (bounded fix‑loops)
 - **`review`** — `dimensions` + `verify: adversarial`
@@ -157,6 +158,12 @@ Follows [Semantic Versioning](https://semver.org/) — `MAJOR.MINOR.PATCH`. Bump
 | **patch** | last digit (`+0.0.1`) | `0.2.2` | backward‑compatible bug fix |
 | **minor** | middle digit (`+0.1.0`, patch resets) | `0.3.0` | backward‑compatible feature |
 | **major** | first digit (`+1.0.0`, rest reset) | `1.0.0` | breaking change |
+
+After bumping both manifests, tag the commit on `main` and push the tag — the **Release** workflow (`.github/workflows/release.yml`) runs the tests and publishes a GitHub release with generated notes:
+
+```bash
+git tag vX.Y.Z && git push origin vX.Y.Z
+```
 
 ---
 
