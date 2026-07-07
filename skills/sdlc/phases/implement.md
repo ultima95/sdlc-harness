@@ -19,14 +19,27 @@ Record the chosen mode in `progress.md`.
 
 ## Steps
 1. Confirm phase is `implement` and `spec.md` Part 2 (Plan) has ordered Steps.
-2. For each Step in order:
+2. **Create the feature branch** (per `.sdlc/config.yml` `git.branch`, default `true`).
+   Skip this step entirely in a non-git repo or when `git.branch: false`, and note "worked on
+   the current branch" in `progress.md`. Otherwise:
+   - Resolve the base branch: use `git.base` if set; else the repo default via
+     `git symbolic-ref --short refs/remotes/origin/HEAD` (strip the `origin/` prefix); else the
+     current branch name.
+   - Ensure the working tree is clean (`git status --porcelain` is empty). If it is dirty, STOP
+     and ask the developer to commit or stash — do not auto-stash.
+   - Create and check out the branch off the base: `git checkout -b <type>/<slug>`. The name is
+     `<task type>/<task slug>` — e.g. `feature/add-oauth-login` (see `scripts/lib/git.mjs`
+     `branchName`).
+   - Record it: `node "<SKILL_DIR>/scripts/set-state.mjs" "<taskDir>" field branch <type>/<slug>`
+     then `node "<SKILL_DIR>/scripts/set-state.mjs" "<taskDir>" field base <base>`.
+3. For each Step in order:
    - Subagent-driven: dispatch a fresh implementer subagent with the step text, the
      relevant memory context, and the acceptance criterion it serves. Have it write
      code + tests and report; review, and re-dispatch with fixes if needed.
    - Inline: make the change yourself, following `conventions.md`.
    Commit per step (or per logical unit).
-3. Append a dated entry to `progress.md` (mode used, steps done, commits made).
-4. Advance to Test: `node "<SKILL_DIR>/scripts/set-state.mjs" "<taskDir>" advance`
+4. Append a dated entry to `progress.md` (mode used, branch created, steps done, commits made).
+5. Advance to Test: `node "<SKILL_DIR>/scripts/set-state.mjs" "<taskDir>" advance`
    (phase `implement` → `test`), then follow `<SKILL_DIR>/phases/test.md`.
 
 ## Notes
