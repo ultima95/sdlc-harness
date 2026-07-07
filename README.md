@@ -159,11 +159,17 @@ Follows [Semantic Versioning](https://semver.org/) — `MAJOR.MINOR.PATCH`. Bump
 | **minor** | middle digit (`+0.1.0`, patch resets) | `0.3.0` | backward‑compatible feature |
 | **major** | first digit (`+1.0.0`, rest reset) | `1.0.0` | breaking change |
 
-After bumping both manifests, tag the commit on `main` and push the tag — the **Release** workflow (`.github/workflows/release.yml`) runs the tests and publishes a GitHub release with generated notes:
+Release notes come from [`CHANGELOG.md`](CHANGELOG.md) ([Keep a Changelog](https://keepachangelog.com/) format). To cut a release:
+
+1. Move the `## [Unreleased]` entries into a new `## [X.Y.Z] - YYYY-MM-DD` section in `CHANGELOG.md`.
+2. Bump the version in **both** `package.json` and `.claude-plugin/plugin.json`.
+3. Commit, then tag and push:
 
 ```bash
 git tag vX.Y.Z && git push origin vX.Y.Z
 ```
+
+The **Release** workflow (`.github/workflows/release.yml`) runs the tests, extracts that version's `CHANGELOG.md` section, and publishes it as the GitHub release body (falling back to auto‑generated notes if the section is missing).
 
 ---
 
