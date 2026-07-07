@@ -37,7 +37,10 @@ Record the chosen mode in `progress.md`.
      relevant memory context, and the acceptance criterion it serves. Have it write
      code + tests and report; review, and re-dispatch with fixes if needed.
    - Inline: make the change yourself, following `conventions.md`.
-   Commit per step (or per logical unit).
+   Commit per step (or per logical unit) using **Conventional Commits** —
+   `type(scope): subject` (e.g. `feat:`, `fix:`, `test:`, `docs:`, `refactor:`, `chore:`),
+   imperative subject ≤ ~50 chars — unless `.sdlc/memory/conventions.md` records a different
+   commit convention for this repo, which takes precedence.
 4. Append a dated entry to `progress.md` (mode used, branch created, steps done, commits made).
 5. Advance to Test: `node "<SKILL_DIR>/scripts/set-state.mjs" "<taskDir>" advance`
    (phase `implement` → `test`), then follow `<SKILL_DIR>/phases/test.md`.
