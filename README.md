@@ -7,7 +7,7 @@
 Understand the codebase once, then drive every task through a repeatable, human‑gated lifecycle: **intake → spec & plan → implement → test → review → ship**.
 
 ![Claude Code skill](https://img.shields.io/badge/Claude%20Code-skill-8A2BE2)
-![tests](https://img.shields.io/badge/tests-60%20passing-2ea44f)
+![tests](https://img.shields.io/badge/tests-83%20passing-2ea44f)
 ![node](https://img.shields.io/badge/node-%E2%89%A5%2018-339933?logo=nodedotjs&logoColor=white)
 ![dependencies](https://img.shields.io/badge/dependencies-zero-0aa)
 ![install](https://img.shields.io/badge/install-npx%20skills-111)
@@ -85,6 +85,7 @@ Then **restart Claude Code** so the `sdlc` skill is picked up. Requires Claude C
 | `/sdlc init` | 🧠 Investigate the repo and build **Project Memory** in `.sdlc/memory/`. |
 | `/sdlc task "<request>"` | 🎫 Take an issue / bug / feature from intake all the way to shipped. |
 | `/sdlc status` | 📋 List tasks and their current phase / gate state. |
+| `/sdlc config [get\|set\|check]` | ⚙️ View, set, or validate `.sdlc/config.yml`. |
 | `/sdlc resume [<YYYYMMDD>/<slug>]` | ⏯️ Resume a paused task at its saved phase. |
 | `/sdlc cleanup [<YYYYMMDD>/<slug>]` | 🧹 After a merged PR: verify the merge, delete the branch, return to the base branch, and close the task. |
 | `/sdlc backlog` | 🗒️ Groom deferred work in `.sdlc/backlog.md`: review with context, prune resolved/stale items, promote one to a task. |
@@ -108,12 +109,12 @@ The `track` scales *which phases run* and *how heavy the gates are* — auto‑s
 
 - **One skill, on‑demand guides.** A slim `SKILL.md` conductor dispatches sub‑commands and loads only the current phase guide from `phases/` — context stays lean.
 - **Inline agent fan‑out.** Phase 0 explorers and Review reviewers/verifiers are dispatched inline via the Agent tool — no Workflow‑tool dependency, fully portable.
-- **Deterministic core, tested.** The mechanical parts — slug/date naming, state & gate transitions, bounded loop counters, findings dedupe + majority‑verdict, memory rendering — are dependency‑free Node scripts with **60 unit tests**.
+- **Deterministic core, tested.** The mechanical parts — slug/date naming, state & gate transitions, bounded loop counters, findings dedupe + majority‑verdict, memory rendering — are dependency‑free Node scripts with **83 unit tests**.
 - **Everything is files.** `.sdlc/` holds `config.yml`, `backlog.md` (deferred work), `memory/*.md`, and `tasks/<YYYYMMDD>/<slug>/` (`spec.md` · `progress.md` · `review.md` · `state.json`) — git‑versioned (opt‑out at init) and resumable.
 
 ```text
 skills/sdlc/
-├── SKILL.md              # conductor: init · task · status · resume · memory-refresh
+├── SKILL.md              # conductor: init · task · status · config · resume · memory-refresh
 ├── phases/               # understand · intake · spec-plan · implement · test · review · ship
 ├── agents/               # explorer · reviewer · verifier  (inline subagent roles)
 ├── scripts/              # deterministic, unit-tested Node helpers (+ lib/)
@@ -135,12 +136,14 @@ skills/sdlc/
 - **`git`** — `track_sdlc` (commit `.sdlc/` state alongside code, or gitignore it — chosen at init) + feature-branch lifecycle: `branch` (create `<type>/<slug>` at Implement), `base` (`auto` or an explicit branch), `push`, `cleanup` (`on_merge | off`), `delete_remote`
 - **`memory`** — `graph: auto|on|off`, `refresh: on_ship|manual`
 
+Manage these with **`/sdlc config`**: `show` (view all), `get <key>`, `set <key> <value>` (validates and preserves comments), and `check` (validate — exits non-zero on errors, so it works in CI).
+
 ---
 
 ## 🧪 Development
 
 ```bash
-npm test    # runs the Node unit tests for the bundled scripts (60, zero deps)
+npm test    # runs the Node unit tests for the bundled scripts (83, zero deps)
 ```
 
 ---
