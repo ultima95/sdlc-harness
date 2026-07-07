@@ -1,6 +1,6 @@
 ---
 name: sdlc
-description: Run a gated software development life cycle for a repo. Use for `/sdlc init` (understand the codebase and scaffold project memory), `/sdlc task "<request>"` (start an issue/bug/feature through spec→implement→test→review→ship), `/sdlc status`, `/sdlc memory-refresh`, and `/sdlc resume`. Triggers on "sdlc", "run the lifecycle", "start a task", "sdlc init/status".
+description: Run a gated software development life cycle for a repo. Use for `/sdlc init` (understand the codebase and scaffold project memory), `/sdlc task "<request>"` (start an issue/bug/feature through spec→implement→test→review→ship), `/sdlc status`, `/sdlc config` (view/set/validate settings), `/sdlc memory-refresh`, and `/sdlc resume`. Triggers on "sdlc", "run the lifecycle", "start a task", "sdlc init/status".
 ---
 
 # SDLC Conductor
@@ -67,6 +67,21 @@ Show all tasks and their current phase/gate state.
 
 1. Run: `node "<SKILL_DIR>/scripts/status.mjs"` from the repo root (`$(pwd)`).
 2. Print the output verbatim.
+
+### config
+View, edit, and validate `.sdlc/config.yml`. Backed by `scripts/config.mjs`; run it from the
+repo root (`$(pwd)`) and relay the output. Keys are dotted paths (e.g. `gates.review`).
+
+1. **show** (default): `node "<SKILL_DIR>/scripts/config.mjs" show` — print settings grouped
+   by section with allowed values.
+2. **get**: `node "<SKILL_DIR>/scripts/config.mjs" get <key>` — print one value.
+3. **set**: `node "<SKILL_DIR>/scripts/config.mjs" set <key> <value>` — validate and write one
+   key, preserving comments. On an invalid value it exits non-zero and prints the allowed set;
+   relay that and do not retry blindly.
+4. **check**: `node "<SKILL_DIR>/scripts/config.mjs" check` — static validation
+   (`OK`/`WARN`/`ERR` + summary); exits non-zero if any `ERR`.
+
+When `git.track_sdlc: true`, commit the changed `.sdlc/config.yml` after a `set`.
 
 ### memory-refresh
 Re-run Phase 0 to refresh Project Memory (e.g., after significant changes).
