@@ -14,9 +14,11 @@ Memory: this phase UPDATES memory (step 4) rather than bulk-reading it.
    - **Push** the branch if `git.push` (default `true`): `git push -u origin <branch>` (confirm
      first when `trust_level: strict`). Skip in a non-git repo or when there is no remote.
    - **`ship.mode: pr`** — open a pull request against the base (confirm unless `trusted`):
-     `gh pr create --base <base> --head <branch>` — title from the task; body summarizing the
-     change + the `spec.md` acceptance criteria. If `.github/PULL_REQUEST_TEMPLATE.md` exists,
-     fill it instead of writing free-form. Record the PR and report its URL:
+     `gh pr create --base <base> --head <branch>` — title as a **Conventional Commit** summary
+     derived from the task (`type(scope): subject`, e.g. `feat: add OAuth login`) so a
+     squash-merge produces a conventional commit; body summarizing the change + the `spec.md`
+     acceptance criteria. If `.github/PULL_REQUEST_TEMPLATE.md` exists, fill it instead of
+     writing free-form. Record the PR and report its URL:
      `node "<SKILL_DIR>/scripts/set-state.mjs" "<taskDir>" field pr <number-or-url>`.
    - **`ship.mode: commit`** — leave the pushed branch for the developer to merge/PR manually.
 3. **Update docs** if the change affects user-facing docs (README, etc.).
