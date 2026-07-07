@@ -45,10 +45,13 @@ Create a new task folder for an issue/bug/feature.
 7. Run **Phase 2 — Spec & Plan**: follow `<SKILL_DIR>/phases/spec-plan.md` (pass
    `<taskDir>`), ending at the spec gate.
 8. After the gate is approved (phase `implement`), run **Phase 3 — Implement**
-   (`<SKILL_DIR>/phases/implement.md`), **Phase 4 — Test** (`<SKILL_DIR>/phases/test.md`),
+   (`<SKILL_DIR>/phases/implement.md`; creates a `<type>/<slug>` feature branch per
+   `git.branch`), **Phase 4 — Test** (`<SKILL_DIR>/phases/test.md`),
    **Phase 5 — Review** (`<SKILL_DIR>/phases/review.md`, review gate), then
-   **Phase 6 — Ship** (`<SKILL_DIR>/phases/ship.md`). Ship commits or opens a PR
-   (`ship.mode`), refreshes Project Memory, and moves the task to `done`.
+   **Phase 6 — Ship** (`<SKILL_DIR>/phases/ship.md`). Ship pushes the branch and opens a PR or
+   leaves commits (`ship.mode`), refreshes Project Memory, and moves the task to `shipped` (a
+   branch awaiting merge) or `done`. When a `shipped` task's PR is merged, run **`/sdlc cleanup`**
+   to verify the merge, delete the branch, return to base, and close the task.
 
 ### status
 Show all tasks and their current phase/gate state.
@@ -59,6 +62,16 @@ Show all tasks and their current phase/gate state.
 ### memory-refresh
 Re-run Phase 0 to refresh Project Memory (e.g., after significant changes).
 Follow `<SKILL_DIR>/phases/understand.md`; it overwrites the memory files.
+
+### cleanup
+Finish a `shipped` task after its PR was merged out-of-band.
+
+1. Determine the task: if the user gave `<YYYYMMDD>/<slug>`, use it; else run
+   `node "<SKILL_DIR>/scripts/resume.mjs" "$(pwd)"` and pick a task whose phase is `shipped`
+   (ask the user if there are several).
+2. Read its state: `node "<SKILL_DIR>/scripts/resume.mjs" "$(pwd)" "<taskId>"`; confirm the phase
+   is `shipped`. If it is already `done`, tell the user the task is already cleaned up.
+3. Follow **Phase 7 — Cleanup** (`<SKILL_DIR>/phases/cleanup.md`), passing the task folder.
 
 ### resume
 Resume a paused task from its saved state.
@@ -73,7 +86,8 @@ Resume a paused task from its saved state.
 4. Re-enter that phase by following its guide (passing the task folder):
    `intake`→`phases/intake.md`, `spec_plan`→`phases/spec-plan.md`,
    `implement`→`phases/implement.md`, `test`→`phases/test.md`,
-   `review`→`phases/review.md`, `ship`→`phases/ship.md`. If `phase` is `done`, tell the
+   `review`→`phases/review.md`, `ship`→`phases/ship.md`,
+   `shipped`→`phases/cleanup.md`. If `phase` is `done`, tell the
    user the task is already complete.
 5. Continue the lifecycle from there.
 
