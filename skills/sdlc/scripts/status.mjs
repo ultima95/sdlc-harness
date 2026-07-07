@@ -27,7 +27,12 @@ export function formatStatus(tasks) {
     const gates = Object.entries(t.gates || {}).map(([k, v]) => `${k}:${v}`).join(' ');
     return String(t.task).padEnd(40) + ' ' + String(t.phase).padEnd(10) + ' ' + gates;
   });
-  return [header, ...rows].join('\n');
+  const lines = [header, ...rows];
+  const shipped = tasks.filter((t) => t.phase === 'shipped').length;
+  if (shipped) {
+    lines.push('', `${shipped} task(s) in 'shipped' — run /sdlc cleanup <taskId> to verify the merge and delete the branch.`);
+  }
+  return lines.join('\n');
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) {
