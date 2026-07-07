@@ -23,7 +23,9 @@ test('renderCheck reports zero errors for the scaffold', () => {
 
 test('renderCheck reports errors for a broken config', () => {
   const broken = 'gates:\n  spec_plan: hard\n  review: maybe\n';
-  assert.ok(renderCheck(broken).errors > 0);
+  const { report, errors } = renderCheck(broken);
+  assert.ok(errors > 0);
+  assert.match(report, /ERR\s+gates\.review/);
 });
 
 const SCRIPT = path.join(path.dirname(fileURLToPath(import.meta.url)), 'config.mjs');
