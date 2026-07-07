@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import { templatesDir } from './paths.mjs';
-import { parseConfig, getValue, validate, applySet } from './config.mjs';
+import { parseConfig, getValue, validate, applySet, SCHEMA } from './config.mjs';
 
 const templateText = fs.readFileSync(path.join(templatesDir(), 'config.yml'), 'utf8');
 
@@ -93,4 +93,10 @@ test('applySet rejects an invalid enum value without writing', () => {
 
 test('applySet rejects an unknown key', () => {
   assert.throws(() => applySet(templateText, 'gates.nope', 'hard'), /unknown config key/);
+});
+
+test('schema and template leaf keys stay in sync (drift guard)', () => {
+  const templateKeys = [...parseConfig(templateText).leaves.keys()].sort();
+  const schemaKeys = Object.keys(SCHEMA).sort();
+  assert.deepEqual(templateKeys, schemaKeys);
 });
