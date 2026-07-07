@@ -95,6 +95,11 @@ test('applySet rejects an unknown key', () => {
   assert.throws(() => applySet(templateText, 'gates.nope', 'hard'), /unknown config key/);
 });
 
+test('applySet throws when a schema key is absent from the config', () => {
+  const partial = 'gates:\n  spec_plan: hard\n';
+  assert.throws(() => applySet(partial, 'gates.review', 'soft'), /re-run \/sdlc init/);
+});
+
 test('schema and template leaf keys stay in sync (drift guard)', () => {
   const templateKeys = [...parseConfig(templateText).leaves.keys()].sort();
   const schemaKeys = Object.keys(SCHEMA).sort();
