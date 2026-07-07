@@ -87,6 +87,7 @@ Then **restart Claude Code** so the `sdlc` skill is picked up. Requires Claude C
 | `/sdlc status` | 📋 List tasks and their current phase / gate state. |
 | `/sdlc resume [<YYYYMMDD>/<slug>]` | ⏯️ Resume a paused task at its saved phase. |
 | `/sdlc cleanup [<YYYYMMDD>/<slug>]` | 🧹 After a merged PR: verify the merge, delete the branch, return to the base branch, and close the task. |
+| `/sdlc backlog` | 🗒️ Groom deferred work in `.sdlc/backlog.md`: review with context, prune resolved/stale items, promote one to a task. |
 | `/sdlc memory-refresh` | ♻️ Re‑run Phase 0 to refresh Project Memory. |
 
 ---

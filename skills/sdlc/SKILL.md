@@ -91,6 +91,23 @@ Resume a paused task from its saved state.
    user the task is already complete.
 5. Continue the lifecycle from there.
 
+### backlog
+Groom deferred work in `.sdlc/backlog.md` — e.g. when there's free time to burn it down.
+This is a maintenance flow, not a lifecycle phase; it reads and prunes the file and promotes
+items into normal tasks. No dedicated script.
+
+1. List the open items (`- [ ]`) from `.sdlc/backlog.md`. If there are none, say the backlog
+   is empty and stop.
+2. Context-check each item (or the ones the user cares about) — index-first via
+   `.sdlc/memory/`, plus the code: is it still relevant, already solved incidentally, a
+   duplicate, or stale? Give your read per item.
+3. **Prune** (with the developer's OK): check off (`- [x]`) or delete items that are already
+   done, obsolete, or no longer wanted. Commit the pruned `.sdlc/backlog.md`.
+4. **Promote** an item the developer picks up now: start it as a normal task — run the
+   **task** flow (see `### task`) with the item text as the request. When that task reaches
+   `shipped`/`done`, check its source item off in `.sdlc/backlog.md`.
+5. Report: items pruned, item(s) promoted to tasks, and how many remain open.
+
 ## Notes
 - All commands operate on the current working directory as the project root.
 - If `.sdlc/` does not exist when running `task`/`status`, tell the user to run
