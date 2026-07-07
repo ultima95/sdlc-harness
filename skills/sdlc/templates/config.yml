@@ -25,3 +25,9 @@ review:
   verify: adversarial     # spawn verifiers to refute findings
 ship:
   mode: commit            # commit | pr  (open a PR with gh, or leave commits for the dev)
+git:
+  branch:  true           # create a feature branch <type>/<slug> at Implement; false = current branch
+  base:    auto           # auto = detect origin/HEAD; or explicit "main" / "dev"
+  push:    true           # push the branch during Ship
+  cleanup: on_merge       # on_merge = /sdlc cleanup deletes after a verified merge; off = never
+  delete_remote: true     # on cleanup, also delete the remote branch
