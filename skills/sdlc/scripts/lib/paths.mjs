@@ -17,6 +17,7 @@ export function sdlcPaths(projectRoot) {
   return {
     root,
     config: path.join(root, 'config.yml'),
+    backlog: path.join(root, 'backlog.md'),
     memoryDir: path.join(root, 'memory'),
     tasksDir: path.join(root, 'tasks'),
   };

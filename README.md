@@ -108,7 +108,7 @@ The `track` scales *which phases run* and *how heavy the gates are* — auto‑s
 - **One skill, on‑demand guides.** A slim `SKILL.md` conductor dispatches sub‑commands and loads only the current phase guide from `phases/` — context stays lean.
 - **Inline agent fan‑out.** Phase 0 explorers and Review reviewers/verifiers are dispatched inline via the Agent tool — no Workflow‑tool dependency, fully portable.
 - **Deterministic core, tested.** The mechanical parts — slug/date naming, state & gate transitions, bounded loop counters, findings dedupe + majority‑verdict, memory rendering — are dependency‑free Node scripts with **60 unit tests**.
-- **Everything is files.** `.sdlc/` holds `config.yml`, `memory/*.md`, and `tasks/<YYYYMMDD>/<slug>/` (`spec.md` · `progress.md` · `review.md` · `state.json`) — git‑versioned and resumable.
+- **Everything is files.** `.sdlc/` holds `config.yml`, `backlog.md` (deferred work), `memory/*.md`, and `tasks/<YYYYMMDD>/<slug>/` (`spec.md` · `progress.md` · `review.md` · `state.json`) — git‑versioned and resumable.
 
 ```text
 skills/sdlc/
