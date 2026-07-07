@@ -16,6 +16,10 @@ it informs the approach. Load only what you need.
    - `hotfix`: a one-line approach + the regression test that proves the fix.
    - `fast`: summary approach + steps + test plan.
    - `full`: the complete plan.
+   **Scope discipline (YAGNI):** plan only what the acceptance criteria require now.
+   Prefer the simplest approach that meets them; don't add speculative features,
+   config knobs, or abstraction layers for needs that aren't in the spec. Defer any
+   "might-need-later" idea to a **Future Work** note in `spec.md` rather than building it.
 3. Append a dated entry to `progress.md`.
 4. **Spec gate** — read `gates.spec_plan` from `.sdlc/config.yml`:
    - `hard` (default) AND track is not `hotfix`: present a concise summary to the
