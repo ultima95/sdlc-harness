@@ -7,7 +7,7 @@
 Understand the codebase once, then drive every task through a repeatable, human‑gated lifecycle: **intake → spec & plan → implement → test → review → ship**.
 
 ![Claude Code skill](https://img.shields.io/badge/Claude%20Code-skill-8A2BE2)
-![tests](https://img.shields.io/badge/tests-52%20passing-2ea44f)
+![tests](https://img.shields.io/badge/tests-60%20passing-2ea44f)
 ![node](https://img.shields.io/badge/node-%E2%89%A5%2018-339933?logo=nodedotjs&logoColor=white)
 ![dependencies](https://img.shields.io/badge/dependencies-zero-0aa)
 ![install](https://img.shields.io/badge/install-npx%20skills-111)
@@ -107,7 +107,7 @@ The `track` scales *which phases run* and *how heavy the gates are* — auto‑s
 
 - **One skill, on‑demand guides.** A slim `SKILL.md` conductor dispatches sub‑commands and loads only the current phase guide from `phases/` — context stays lean.
 - **Inline agent fan‑out.** Phase 0 explorers and Review reviewers/verifiers are dispatched inline via the Agent tool — no Workflow‑tool dependency, fully portable.
-- **Deterministic core, tested.** The mechanical parts — slug/date naming, state & gate transitions, bounded loop counters, findings dedupe + majority‑verdict, memory rendering — are dependency‑free Node scripts with **52 unit tests**.
+- **Deterministic core, tested.** The mechanical parts — slug/date naming, state & gate transitions, bounded loop counters, findings dedupe + majority‑verdict, memory rendering — are dependency‑free Node scripts with **60 unit tests**.
 - **Everything is files.** `.sdlc/` holds `config.yml`, `memory/*.md`, and `tasks/<YYYYMMDD>/<slug>/` (`spec.md` · `progress.md` · `review.md` · `state.json`) — git‑versioned and resumable.
 
 ```text
@@ -139,7 +139,7 @@ skills/sdlc/
 ## 🧪 Development
 
 ```bash
-npm test    # runs the Node unit tests for the bundled scripts (52, zero deps)
+npm test    # runs the Node unit tests for the bundled scripts (60, zero deps)
 ```
 
 ---
