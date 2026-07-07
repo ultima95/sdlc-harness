@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import { templatesDir } from './paths.mjs';
-import { parseConfig, getValue, validate } from './config.mjs';
+import { parseConfig, getValue, validate, applySet } from './config.mjs';
 
 const templateText = fs.readFileSync(path.join(templatesDir(), 'config.yml'), 'utf8');
 
@@ -57,4 +57,40 @@ test('validate warns on an empty dimensions list', () => {
   const text = ['review:', '  dimensions: []', '  verify: adversarial'].join('\n');
   const results = validate(parseConfig(text));
   assert.equal(results.find((x) => x.key === 'review.dimensions').level, 'warn');
+});
+
+test('applySet rewrites only the target line and preserves its comment', () => {
+  const next = applySet(templateText, 'gates.review', 'soft');
+  assert.equal(getValue(parseConfig(next), 'gates.review'), 'soft');
+  const before = templateText.split('\n');
+  const after = next.split('\n');
+  const diff = before.map((l, i) => (l === after[i] ? -1 : i)).filter((x) => x >= 0);
+  assert.equal(diff.length, 1, 'exactly one line changes');
+  assert.match(after[diff[0]], /# hard \| soft \| off/); // comment preserved
+  assert.match(after[diff[0]], /^  review:\s+soft/);      // indentation preserved
+});
+
+test('applySet coerces and writes a boolean', () => {
+  const next = applySet(templateText, 'git.push', 'false');
+  assert.equal(getValue(parseConfig(next), 'git.push'), false);
+});
+
+test('applySet writes a list as inline flow', () => {
+  const next = applySet(templateText, 'review.dimensions', 'correctness, tests');
+  assert.deepEqual(getValue(parseConfig(next), 'review.dimensions'), ['correctness', 'tests']);
+  assert.match(next, /dimensions: \[correctness, tests\]/);
+});
+
+test('applySet quotes a string value containing spaces', () => {
+  const next = applySet(templateText, 'project.test', 'npm test');
+  assert.equal(getValue(parseConfig(next), 'project.test'), 'npm test');
+  assert.match(next, /test:\s+"npm test"/);
+});
+
+test('applySet rejects an invalid enum value without writing', () => {
+  assert.throws(() => applySet(templateText, 'gates.review', 'maybe'), /expected hard, soft, off/);
+});
+
+test('applySet rejects an unknown key', () => {
+  assert.throws(() => applySet(templateText, 'gates.nope', 'hard'), /unknown config key/);
 });

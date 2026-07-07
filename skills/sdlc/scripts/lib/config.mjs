@@ -138,3 +138,71 @@ function checkValue(key, value, spec) {
 function r(level, key, value, note) {
   return { level, key, value, note: note || '' };
 }
+
+// --- Editor: rewrite one key's line, preserving indentation and comments. ---
+export function applySet(text, keyPath, rawValue) {
+  const spec = SCHEMA[keyPath];
+  if (!spec) throw new Error(`unknown config key: ${keyPath}`);
+  const value = coerce(spec, rawValue);
+  const model = parseConfig(text);
+  const leaf = model.leaves.get(keyPath);
+  if (!leaf) {
+    throw new Error(`key ${keyPath} not present in .sdlc/config.yml — re-run /sdlc init or add it by hand`);
+  }
+  const lines = text.split('\n');
+  const m = lines[leaf.lineIndex].match(/^(\s*[A-Za-z0-9_]+:)(\s*)(.*)$/);
+  const comment = trailingComment(m[3]);
+  lines[leaf.lineIndex] = m[1] + m[2] + formatValue(spec, value) + comment;
+  return lines.join('\n');
+}
+
+function coerce(spec, raw) {
+  switch (spec.type) {
+    case 'bool':
+      if (raw === 'true') return true;
+      if (raw === 'false') return false;
+      throw new Error(`invalid value: ${raw} (expected true or false)`);
+    case 'int': {
+      if (!/^-?\d+$/.test(raw)) throw new Error(`invalid integer: ${raw}`);
+      const n = Number(raw);
+      if (n <= 0) throw new Error(`must be a positive integer: ${raw}`);
+      return n;
+    }
+    case 'enum':
+      if (!spec.allowed.includes(raw)) {
+        throw new Error(`invalid value: ${raw} (expected ${spec.allowed.join(', ')})`);
+      }
+      return raw;
+    case 'list': {
+      const items = raw.split(',').map((x) => x.trim()).filter(Boolean);
+      if (!items.length) throw new Error('list needs at least one item');
+      return items;
+    }
+    default:
+      return raw; // string
+  }
+}
+
+function formatValue(spec, value) {
+  if (spec.type === 'list') return `[${value.join(', ')}]`;
+  if (spec.type === 'bool') return value ? 'true' : 'false';
+  if (spec.type === 'int') return String(value);
+  const s = String(value);
+  return needsQuote(s) ? `"${s}"` : s;
+}
+
+function needsQuote(s) {
+  return s === '' || /[\s:#'"]/.test(s) || /^[[\]{}&*!|>%@`,]/.test(s);
+}
+
+function trailingComment(afterColon) {
+  const s = afterColon;
+  if (s[0] === '"' || s[0] === "'") {
+    const end = s.indexOf(s[0], 1);
+    if (end !== -1) return s.slice(end + 1);
+  }
+  const h = s.search(/\s#/);
+  if (h !== -1) return s.slice(h);
+  const trail = s.match(/\s+$/);
+  return trail ? trail[0] : '';
+}
