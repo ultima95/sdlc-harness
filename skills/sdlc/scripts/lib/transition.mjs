@@ -1,4 +1,4 @@
-export const PHASES = ['intake', 'spec_plan', 'implement', 'test', 'review', 'ship', 'done'];
+export const PHASES = ['intake', 'spec_plan', 'implement', 'test', 'review', 'ship', 'shipped', 'done'];
 
 export function nextPhase(phase) {
   const i = PHASES.indexOf(phase);
