@@ -12,6 +12,8 @@ locate the affected area). Do NOT bulk-load `.sdlc/memory/`.
 ## Steps
 1. Read the task's `spec.md` and `state.json`. Confirm phase is `intake`.
 2. Analyze the request: restate it in one line and list what is ambiguous or unstated.
+   Skim `.sdlc/backlog.md` (deferred work from past tasks) — if any open item relates to this
+   request, surface it so the developer can decide whether to fold it into scope now.
 3. Ask the developer clarifying questions — scaled by `track`:
    - `full`: brainstorm thoroughly — requirements, approach, acceptance criteria, edge cases.
    - `fast`: 1–3 targeted questions only.

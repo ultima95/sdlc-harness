@@ -17,10 +17,11 @@ test('scaffoldSdlc creates config, memory files, and tasks dir', () => {
   const root = mktmp();
   const res = scaffoldSdlc(root);
   assert.ok(fs.existsSync(path.join(root, '.sdlc', 'config.yml')));
+  assert.ok(fs.existsSync(path.join(root, '.sdlc', 'backlog.md')));
   assert.ok(fs.existsSync(path.join(root, '.sdlc', 'memory', 'architecture.md')));
   assert.ok(fs.existsSync(path.join(root, '.sdlc', 'memory', 'index.md')));
   assert.ok(fs.existsSync(path.join(root, '.sdlc', 'tasks', '.gitkeep')));
-  assert.ok(res.created.length >= 9); // config + 7 memory + gitkeep
+  assert.ok(res.created.length >= 10); // config + backlog + 7 memory + gitkeep
 });
 
 test('scaffoldSdlc is idempotent: second run skips existing files', () => {

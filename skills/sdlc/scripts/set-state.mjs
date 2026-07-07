@@ -6,6 +6,7 @@ import { setFrontMatterField } from './lib/frontmatter.mjs';
 
 const GATES = ['spec_plan', 'review'];
 const GATE_VALUES = ['pending', 'approved'];
+const FIELDS = ['branch', 'base', 'pr'];
 
 function updateSpecField(taskDir, key, value) {
   const p = path.join(taskDir, 'spec.md');
@@ -37,15 +38,24 @@ export function setGate(taskDir, gate, value) {
   return s.gates;
 }
 
+export function setField(taskDir, key, value) {
+  if (!FIELDS.includes(key)) throw new Error(`invalid field: ${key} (expected ${FIELDS.join('|')})`);
+  const s = readState(taskDir);
+  s[key] = value;
+  writeState(taskDir, s);
+  return s[key];
+}
+
 if (import.meta.url === `file://${process.argv[1]}`) {
   const [taskDir, cmd, a, b] = process.argv.slice(2);
   if (!taskDir || !cmd) {
-    console.error('usage: node set-state.mjs <taskDir> <phase <name> | advance | gate <gate> <value>>');
+    console.error('usage: node set-state.mjs <taskDir> <phase <name> | advance | gate <gate> <value> | field <key> <value>>');
     process.exit(1);
   }
   if (cmd === 'phase') setPhase(taskDir, a);
   else if (cmd === 'advance') advance(taskDir);
   else if (cmd === 'gate') setGate(taskDir, a, b);
+  else if (cmd === 'field') setField(taskDir, a, b);
   else { console.error(`unknown command: ${cmd}`); process.exit(1); }
   console.log(JSON.stringify(readState(taskDir)));
 }

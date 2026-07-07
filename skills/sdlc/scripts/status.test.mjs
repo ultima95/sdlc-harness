@@ -38,3 +38,14 @@ test('formatStatus renders a header and a friendly empty message', () => {
   assert.match(out, /20260706\/x/);
   assert.match(out, /intake/);
 });
+
+test('formatStatus hints cleanup when a task is shipped', () => {
+  const out = formatStatus([{ task: '20260707/x', phase: 'shipped', gates: {} }]);
+  assert.match(out, /shipped/);
+  assert.match(out, /\/sdlc cleanup/);
+});
+
+test('formatStatus omits the cleanup hint when nothing is shipped', () => {
+  const out = formatStatus([{ task: '20260707/x', phase: 'intake', gates: { spec_plan: 'pending' } }]);
+  assert.doesNotMatch(out, /\/sdlc cleanup/);
+});

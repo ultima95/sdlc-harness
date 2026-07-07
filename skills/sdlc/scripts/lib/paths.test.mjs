@@ -17,6 +17,7 @@ test('sdlcPaths joins the standard layout', () => {
   const p = sdlcPaths('/proj');
   assert.equal(p.root, path.join('/proj', '.sdlc'));
   assert.equal(p.config, path.join('/proj', '.sdlc', 'config.yml'));
+  assert.equal(p.backlog, path.join('/proj', '.sdlc', 'backlog.md'));
   assert.equal(p.memoryDir, path.join('/proj', '.sdlc', 'memory'));
   assert.equal(p.tasksDir, path.join('/proj', '.sdlc', 'tasks'));
 });

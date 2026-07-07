@@ -5,7 +5,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { scaffoldSdlc } from './scaffold.mjs';
 import { createTask } from './new-task.mjs';
-import { setPhase, advance, setGate } from './set-state.mjs';
+import { setPhase, advance, setGate, setField } from './set-state.mjs';
 
 const tmps = [];
 function newTask() {
@@ -43,4 +43,22 @@ test('setGate rejects an invalid gate or value', () => {
   const taskDir = newTask();
   assert.throws(() => setGate(taskDir, 'nope', 'approved'), /invalid gate/);
   assert.throws(() => setGate(taskDir, 'review', 'maybe'), /invalid gate value/);
+});
+
+test('setField writes a whitelisted key to state.json (not spec.md)', () => {
+  const taskDir = newTask();
+  setField(taskDir, 'branch', 'feature/fix-login');
+  setField(taskDir, 'base', 'main');
+  setField(taskDir, 'pr', '42');
+  const s = state(taskDir);
+  assert.equal(s.branch, 'feature/fix-login');
+  assert.equal(s.base, 'main');
+  assert.equal(s.pr, '42');
+  // operational fields do NOT leak into the spec frontmatter
+  assert.doesNotMatch(spec(taskDir), /^branch:/m);
+});
+
+test('setField rejects an unknown key', () => {
+  const taskDir = newTask();
+  assert.throws(() => setField(taskDir, 'nope', 'x'), /invalid field/);
 });

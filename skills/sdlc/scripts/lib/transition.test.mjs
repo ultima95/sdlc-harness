@@ -3,17 +3,18 @@ import assert from 'node:assert/strict';
 import { PHASES, nextPhase } from './transition.mjs';
 
 test('PHASES is the canonical ordered lifecycle', () => {
-  assert.deepEqual(PHASES, ['intake', 'spec_plan', 'implement', 'test', 'review', 'ship', 'done']);
+  assert.deepEqual(PHASES, ['intake', 'spec_plan', 'implement', 'test', 'review', 'ship', 'shipped', 'done']);
 });
 
 test('nextPhase returns the following phase', () => {
   assert.equal(nextPhase('intake'), 'spec_plan');
   assert.equal(nextPhase('spec_plan'), 'implement');
   assert.equal(nextPhase('review'), 'ship');
+  assert.equal(nextPhase('ship'), 'shipped');
 });
 
 test('nextPhase caps at done', () => {
-  assert.equal(nextPhase('ship'), 'done');
+  assert.equal(nextPhase('shipped'), 'done');
   assert.equal(nextPhase('done'), 'done');
 });
 

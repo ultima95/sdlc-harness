@@ -45,10 +45,13 @@ Create a new task folder for an issue/bug/feature.
 7. Run **Phase 2 — Spec & Plan**: follow `<SKILL_DIR>/phases/spec-plan.md` (pass
    `<taskDir>`), ending at the spec gate.
 8. After the gate is approved (phase `implement`), run **Phase 3 — Implement**
-   (`<SKILL_DIR>/phases/implement.md`), **Phase 4 — Test** (`<SKILL_DIR>/phases/test.md`),
+   (`<SKILL_DIR>/phases/implement.md`; creates a `<type>/<slug>` feature branch per
+   `git.branch`), **Phase 4 — Test** (`<SKILL_DIR>/phases/test.md`),
    **Phase 5 — Review** (`<SKILL_DIR>/phases/review.md`, review gate), then
-   **Phase 6 — Ship** (`<SKILL_DIR>/phases/ship.md`). Ship commits or opens a PR
-   (`ship.mode`), refreshes Project Memory, and moves the task to `done`.
+   **Phase 6 — Ship** (`<SKILL_DIR>/phases/ship.md`). Ship pushes the branch and opens a PR or
+   leaves commits (`ship.mode`), refreshes Project Memory, and moves the task to `shipped` (a
+   branch awaiting merge) or `done`. When a `shipped` task's PR is merged, run **`/sdlc cleanup`**
+   to verify the merge, delete the branch, return to base, and close the task.
 
 ### status
 Show all tasks and their current phase/gate state.
@@ -59,6 +62,16 @@ Show all tasks and their current phase/gate state.
 ### memory-refresh
 Re-run Phase 0 to refresh Project Memory (e.g., after significant changes).
 Follow `<SKILL_DIR>/phases/understand.md`; it overwrites the memory files.
+
+### cleanup
+Finish a `shipped` task after its PR was merged out-of-band.
+
+1. Determine the task: if the user gave `<YYYYMMDD>/<slug>`, use it; else run
+   `node "<SKILL_DIR>/scripts/resume.mjs" "$(pwd)"` and pick a task whose phase is `shipped`
+   (ask the user if there are several).
+2. Read its state: `node "<SKILL_DIR>/scripts/resume.mjs" "$(pwd)" "<taskId>"`; confirm the phase
+   is `shipped`. If it is already `done`, tell the user the task is already cleaned up.
+3. Follow **Phase 7 — Cleanup** (`<SKILL_DIR>/phases/cleanup.md`), passing the task folder.
 
 ### resume
 Resume a paused task from its saved state.
@@ -73,9 +86,27 @@ Resume a paused task from its saved state.
 4. Re-enter that phase by following its guide (passing the task folder):
    `intake`→`phases/intake.md`, `spec_plan`→`phases/spec-plan.md`,
    `implement`→`phases/implement.md`, `test`→`phases/test.md`,
-   `review`→`phases/review.md`, `ship`→`phases/ship.md`. If `phase` is `done`, tell the
+   `review`→`phases/review.md`, `ship`→`phases/ship.md`,
+   `shipped`→`phases/cleanup.md`. If `phase` is `done`, tell the
    user the task is already complete.
 5. Continue the lifecycle from there.
+
+### backlog
+Groom deferred work in `.sdlc/backlog.md` — e.g. when there's free time to burn it down.
+This is a maintenance flow, not a lifecycle phase; it reads and prunes the file and promotes
+items into normal tasks. No dedicated script.
+
+1. List the open items (`- [ ]`) from `.sdlc/backlog.md`. If there are none, say the backlog
+   is empty and stop.
+2. Context-check each item (or the ones the user cares about) — index-first via
+   `.sdlc/memory/`, plus the code: is it still relevant, already solved incidentally, a
+   duplicate, or stale? Give your read per item.
+3. **Prune** (with the developer's OK): check off (`- [x]`) or delete items that are already
+   done, obsolete, or no longer wanted. Commit the pruned `.sdlc/backlog.md`.
+4. **Promote** an item the developer picks up now: start it as a normal task — run the
+   **task** flow (see `### task`) with the item text as the request. When that task reaches
+   `shipped`/`done`, check its source item off in `.sdlc/backlog.md`.
+5. Report: items pruned, item(s) promoted to tasks, and how many remain open.
 
 ## Notes
 - All commands operate on the current working directory as the project root.

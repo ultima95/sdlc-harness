@@ -23,6 +23,7 @@ export function scaffoldSdlc(targetRoot, { force = false } = {}) {
   };
 
   copy(path.join(tpl, 'config.yml'), p.config);
+  copy(path.join(tpl, 'backlog.md'), p.backlog);
   for (const f of MEMORY_FILES) copy(path.join(tpl, 'memory', f), path.join(p.memoryDir, f));
 
   const gitkeep = path.join(p.tasksDir, '.gitkeep');
