@@ -68,6 +68,9 @@ test('applySet rewrites only the target line and preserves its comment', () => {
   assert.equal(diff.length, 1, 'exactly one line changes');
   assert.match(after[diff[0]], /# hard \| soft \| off/); // comment preserved
   assert.match(after[diff[0]], /^  review:\s+soft/);      // indentation preserved
+  // comment column preserved: soft and hard are the same width, so the whole
+  // line is byte-identical except the value token.
+  assert.equal(after[diff[0]], before[diff[0]].replace('hard', 'soft'));
 });
 
 test('applySet coerces and writes a boolean', () => {

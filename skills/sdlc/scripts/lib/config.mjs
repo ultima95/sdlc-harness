@@ -201,8 +201,8 @@ function trailingComment(afterColon) {
     const end = s.indexOf(s[0], 1);
     if (end !== -1) return s.slice(end + 1);
   }
-  const h = s.search(/\s#/);
-  if (h !== -1) return s.slice(h);
+  const gap = s.match(/\s+#/);
+  if (gap) return s.slice(gap.index);
   const trail = s.match(/\s+$/);
   return trail ? trail[0] : '';
 }
