@@ -32,7 +32,11 @@ phase is expected to run in a LATER session than Ship.
 7. Record: `node "<SKILL_DIR>/scripts/progress.mjs" "<taskDir>" shipped "cleaned up: deleted <branch>, on <base>"`.
 8. Close the task: `node "<SKILL_DIR>/scripts/set-state.mjs" "<taskDir>" advance`
    (phase `shipped` → `done`).
-9. Report: the branch deleted (local/remote), the base now checked out, and that the task is `done`.
+9. **Commit the final `.sdlc/` state on the base** when `git.track_sdlc` (see SKILL.md
+   § Committing `.sdlc/` state): `git add .sdlc && git commit -m "chore(sdlc): close <taskId>"`,
+   then push it if `git.push` (default `true`): `git push`. If the base is protected and rejects
+   the commit/push, report it and leave the change for the developer.
+10. Report: the branch deleted (local/remote), the base now checked out, and that the task is `done`.
 
 ## Notes
 - Never delete a genuinely unmerged branch. Step 2's PR verdict is authoritative — a

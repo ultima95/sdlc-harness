@@ -12,7 +12,9 @@ isn't already clear from `.sdlc/config.yml`.
    (each acceptance criterion → a test). For `hotfix`, ensure a regression test that
    reproduces the bug exists and now passes.
 2. Run the test command from `.sdlc/config.yml` `project.test`.
-3. If tests PASS: append a dated entry to `progress.md`, optionally reset the counter
+3. If tests PASS: append a dated entry to `progress.md`, commit any new/updated tests —
+   staging the `.sdlc/` changes in the same commit when `git.track_sdlc` (see SKILL.md
+   § Committing `.sdlc/` state) — optionally reset the counter
    (`node "<SKILL_DIR>/scripts/loop.mjs" "<taskDir>" reset test`), then advance to
    Review: `node "<SKILL_DIR>/scripts/set-state.mjs" "<taskDir>" advance`
    (phase `test` → `review`). Follow the Review phase (`<SKILL_DIR>/phases/review.md`).

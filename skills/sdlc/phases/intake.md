@@ -30,3 +30,6 @@ locate the affected area). Do NOT bulk-load `.sdlc/memory/`.
 ## Notes
 - This phase is a conversation — do not guess when you can ask.
 - Lock decisions under "Assumptions & resolved questions" so they aren't re-litigated later.
+- Do **not** commit `.sdlc/` here — Intake runs on the base before the feature branch exists.
+  Its writes ride onto the branch at Implement and fold into the first commit (see SKILL.md
+  § Committing `.sdlc/` state).

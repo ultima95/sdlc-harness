@@ -26,6 +26,7 @@ review:
 ship:
   mode: commit            # commit | pr  (open a PR with gh, or leave commits for the dev)
 git:
+  track_sdlc: true        # commit .sdlc/ state alongside code (chosen at init); false = gitignore it, local-only
   branch:  true           # create a feature branch <type>/<slug> at Implement; false = current branch
   base:    auto           # auto = detect origin/HEAD; or explicit "main" / "dev"
   push:    true           # push the branch during Ship

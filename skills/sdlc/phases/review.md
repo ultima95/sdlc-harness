@@ -22,7 +22,9 @@ Memory (index-first, lazy): load `conventions.md` (for the conventions dimension
    `real` or `refuted`). Keep the `verdict` on each finding.
 5. **Write the report.** Put the final findings (each with its `verdict`) in a JSON file and
    run `node "<SKILL_DIR>/scripts/review.mjs" write "<taskDir>" <findings.json>` to write
-   `review.md`.
+   `review.md`. When `git.track_sdlc`, commit `review.md` with the `.sdlc/` state (see SKILL.md
+   § Committing `.sdlc/` state) — a standalone `.sdlc/` commit on a clean pass; when looping
+   back to Implement, the fix commits there carry it.
 6. **Decide:**
    - **Confirmed `real` findings exist:** bump the loop
      (`node "<SKILL_DIR>/scripts/loop.mjs" "<taskDir>" bump review`) and compare to
