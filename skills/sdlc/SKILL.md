@@ -22,9 +22,18 @@ Scaffold `.sdlc/`, then run Phase 0 to build Project Memory.
 1. Run: `node "<SKILL_DIR>/scripts/scaffold.mjs" "$(pwd)"` and report created vs. skipped.
 2. Run **Phase 0 — understand the codebase**: follow `<SKILL_DIR>/phases/understand.md`
    to fan out explorer subagents, merge their findings, and populate `.sdlc/memory/`.
-3. Report which memory files were populated and suggest the user skim
+3. **Decide whether `.sdlc/` is tracked in git** (git repo only) — ask the developer:
+   - **Track it (recommended)** — the harness state (spec, plan, progress, review, memory,
+     backlog) is git-versioned and shared, committed alongside the code it describes. Set
+     `git.track_sdlc: true` in `.sdlc/config.yml`, then commit the scaffold: `git add .sdlc &&
+     git commit -m "chore: initialize sdlc harness"`. If the base is protected and rejects a
+     direct commit, tell the developer to commit `.sdlc/` (or open a PR).
+   - **Don't track it** — `.sdlc/` stays local-only (never dirties the tree, not shared). Set
+     `git.track_sdlc: false`, add `.sdlc/` to `.gitignore`, and commit that:
+     `git add .gitignore && git commit -m "chore: ignore .sdlc harness state"`.
+4. Report which memory files were populated and suggest the user skim
    `.sdlc/memory/index.md`.
-4. Do **not** overwrite an existing config unless the user explicitly asks (`--force`).
+5. Do **not** overwrite an existing config unless the user explicitly asks (`--force`).
 
 ### task
 Create a new task folder for an issue/bug/feature.
@@ -102,11 +111,27 @@ items into normal tasks. No dedicated script.
    `.sdlc/memory/`, plus the code: is it still relevant, already solved incidentally, a
    duplicate, or stale? Give your read per item.
 3. **Prune** (with the developer's OK): check off (`- [x]`) or delete items that are already
-   done, obsolete, or no longer wanted. Commit the pruned `.sdlc/backlog.md`.
+   done, obsolete, or no longer wanted. Commit the pruned `.sdlc/backlog.md` when `git.track_sdlc`.
 4. **Promote** an item the developer picks up now: start it as a normal task — run the
    **task** flow (see `### task`) with the item text as the request. When that task reaches
    `shipped`/`done`, check its source item off in `.sdlc/backlog.md`.
 5. Report: items pruned, item(s) promoted to tasks, and how many remain open.
+
+## Committing `.sdlc/` state
+When `.sdlc/` is tracked (`git.track_sdlc: true`, chosen at init), its files — a task's
+`spec.md`/`progress.md`/`review.md`/`state.json`, refreshed `memory/*.md`, `backlog.md` — are
+**committed alongside the code they describe**, never left as a trailing pile of dirt:
+- **Intake & Spec-Plan** run on the base before the feature branch exists — they write `.sdlc/`
+  but do **not** commit. Creating the branch at Implement carries those changes onto it, where
+  they fold into the first code commit.
+- **Implement / Test / Review** stage `.sdlc/` in the same commit as the code/tests/fixes. When
+  a phase has no code to ride with (a clean Review pass, Ship's memory refresh), commit the
+  `.sdlc/` changes on their own — on a feature branch these still merge via the PR.
+- **Cleanup** runs on the base after the merge — commit and push (`git.push`) the small final
+  state there directly; if the base is protected and rejects it, report and leave it.
+
+When `.sdlc/` is **not** tracked (`git.track_sdlc: false`, gitignored) or the repo is non-git,
+skip all of this — `.sdlc/` lives on disk and is still resumable.
 
 ## Notes
 - All commands operate on the current working directory as the project root.

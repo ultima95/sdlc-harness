@@ -8,8 +8,9 @@ Memory: this phase UPDATES memory (step 4) rather than bulk-reading it.
 ## Steps
 1. Confirm phase is `ship` and the review gate is approved (`gate_review: approved`), or
    the track/config waived it. Ensure tests are green.
-2. **Finalize, push, and open the PR.** Make sure all work is committed on the feature branch.
-   Read `git.*` and `ship.mode` from `.sdlc/config.yml`. `trust_level` governs confirmations:
+2. **Finalize, push, and open the PR.** Make sure all work is committed on the feature branch —
+   including the task's `.sdlc/` state (`spec.md`/`progress.md`/`review.md`/`state.json`) when
+   `git.track_sdlc`. Read `git.*` and `ship.mode` from `.sdlc/config.yml`. `trust_level` governs confirmations:
    `strict` → confirm push AND PR; `normal` → push auto, confirm PR; `trusted` → both auto.
    - **Push** the branch if `git.push` (default `true`): `git push -u origin <branch>` (confirm
      first when `trust_level: strict`). Skip in a non-git repo or when there is no remote.
@@ -31,6 +32,9 @@ Memory: this phase UPDATES memory (step 4) rather than bulk-reading it.
    - `manual`: skip here; the developer runs `/sdlc memory-refresh` when they choose.
 5. Record the outcome:
    `node "<SKILL_DIR>/scripts/progress.mjs" "<taskDir>" ship "<what shipped: branch/PR + memory refreshed>"`
+   Then, when `git.track_sdlc`, commit the refreshed `.sdlc/` (memory + progress + state) on the
+   feature branch — a standalone `.sdlc/` commit — and `git push` so it's part of the PR (see
+   SKILL.md § Committing `.sdlc/` state).
 6. Close or hand off — depends on whether there is a branch to clean up later:
    - If a feature branch exists (a `branch` is recorded in `state.json`) AND `git.cleanup:
      on_merge` (default): advance to `shipped` —

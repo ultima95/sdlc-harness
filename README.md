@@ -109,7 +109,7 @@ The `track` scales *which phases run* and *how heavy the gates are* — auto‑s
 - **One skill, on‑demand guides.** A slim `SKILL.md` conductor dispatches sub‑commands and loads only the current phase guide from `phases/` — context stays lean.
 - **Inline agent fan‑out.** Phase 0 explorers and Review reviewers/verifiers are dispatched inline via the Agent tool — no Workflow‑tool dependency, fully portable.
 - **Deterministic core, tested.** The mechanical parts — slug/date naming, state & gate transitions, bounded loop counters, findings dedupe + majority‑verdict, memory rendering — are dependency‑free Node scripts with **60 unit tests**.
-- **Everything is files.** `.sdlc/` holds `config.yml`, `backlog.md` (deferred work), `memory/*.md`, and `tasks/<YYYYMMDD>/<slug>/` (`spec.md` · `progress.md` · `review.md` · `state.json`) — git‑versioned and resumable.
+- **Everything is files.** `.sdlc/` holds `config.yml`, `backlog.md` (deferred work), `memory/*.md`, and `tasks/<YYYYMMDD>/<slug>/` (`spec.md` · `progress.md` · `review.md` · `state.json`) — git‑versioned (opt‑out at init) and resumable.
 
 ```text
 skills/sdlc/
@@ -132,7 +132,7 @@ skills/sdlc/
 - **`loops`** — `max_test`, `max_review` (bounded fix‑loops)
 - **`review`** — `dimensions` + `verify: adversarial`
 - **`ship`** — `mode: commit | pr`
-- **`git`** — feature-branch lifecycle: `branch` (create `<type>/<slug>` at Implement), `base` (`auto` or an explicit branch), `push`, `cleanup` (`on_merge | off`), `delete_remote`
+- **`git`** — `track_sdlc` (commit `.sdlc/` state alongside code, or gitignore it — chosen at init) + feature-branch lifecycle: `branch` (create `<type>/<slug>` at Implement), `base` (`auto` or an explicit branch), `push`, `cleanup` (`on_merge | off`), `delete_remote`
 - **`memory`** — `graph: auto|on|off`, `refresh: on_ship|manual`
 
 ---
@@ -142,6 +142,18 @@ skills/sdlc/
 ```bash
 npm test    # runs the Node unit tests for the bundled scripts (60, zero deps)
 ```
+
+---
+
+## 🔖 Versioning
+
+Follows [Semantic Versioning](https://semver.org/) — `MAJOR.MINOR.PATCH`. Bump the version in **both** `package.json` and `.claude-plugin/plugin.json`:
+
+| Bump | Change | e.g. `0.2.1` → | When |
+| --- | --- | --- | --- |
+| **patch** | last digit (`+0.0.1`) | `0.2.2` | backward‑compatible bug fix |
+| **minor** | middle digit (`+0.1.0`, patch resets) | `0.3.0` | backward‑compatible feature |
+| **major** | first digit (`+1.0.0`, rest reset) | `1.0.0` | breaking change |
 
 ---
 
