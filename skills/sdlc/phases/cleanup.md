@@ -21,8 +21,12 @@ phase is expected to run in a LATER session than Ship.
 3. **Confirm** the cleanup plan with the developer once: which branch is deleted, the base to
    return to, and whether the remote branch is deleted (`git.delete_remote`).
 4. **Return to base:** `git checkout <base>` then `git pull --ff-only` (pull in the merged commits).
-5. **Delete the local branch:** `git branch -d <branch>` (safe delete — refuses if not merged).
-   Use `-D` only if the developer explicitly forces it after a CLOSED-not-merged warning.
+5. **Delete the local branch:** `git branch -d <branch>` (safe delete). If it refuses with
+   "not fully merged" **but step 2 confirmed the PR is `MERGED`**, the merge was a squash or
+   rebase — the branch's commits aren't ancestors of `<base>`, yet the change is genuinely
+   merged. The PR verdict is authoritative, so delete with `git branch -D <branch>`. Only use
+   `-D` on a truly *unmerged* branch when the developer explicitly forces it after a
+   CLOSED-not-merged warning (step 2).
 6. **Delete the remote branch** if `git.delete_remote` (default `true`) and it still exists:
    `git push origin --delete <branch>` (confirm per `trust_level`: `strict` confirms; others auto).
 7. Record: `node "<SKILL_DIR>/scripts/progress.mjs" "<taskDir>" shipped "cleaned up: deleted <branch>, on <base>"`.
@@ -31,6 +35,8 @@ phase is expected to run in a LATER session than Ship.
 9. Report: the branch deleted (local/remote), the base now checked out, and that the task is `done`.
 
 ## Notes
-- Never delete an unmerged branch. Step 2 is authoritative; `git branch -d` refusing is a backstop.
+- Never delete a genuinely unmerged branch. Step 2's PR verdict is authoritative — a
+  `git branch -d` refusal when the PR is `MERGED` just means a squash/rebase merge (use `-D`),
+  not that the work is unmerged.
 - Non-git repo, no remote, or `git.cleanup: off` → this phase is not used; Ship already moved the
   task to `done`.
