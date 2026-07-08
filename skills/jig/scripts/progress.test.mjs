@@ -9,7 +9,7 @@ import { appendProgress } from './progress.mjs';
 
 const tmps = [];
 function newTask() {
-  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'sdlc-prog-'));
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'jig-prog-'));
   tmps.push(root);
   scaffoldJig(root);
   return createTask(root, { title: 'Fix login', type: 'bug', date: new Date(2026, 6, 6) }).taskDir;

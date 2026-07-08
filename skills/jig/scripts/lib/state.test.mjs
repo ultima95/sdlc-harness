@@ -7,7 +7,7 @@ import { newTaskState, readState, writeState } from './state.mjs';
 
 const tmps = [];
 function mktmp() {
-  const d = fs.mkdtempSync(path.join(os.tmpdir(), 'sdlc-state-'));
+  const d = fs.mkdtempSync(path.join(os.tmpdir(), 'jig-state-'));
   tmps.push(d);
   return d;
 }

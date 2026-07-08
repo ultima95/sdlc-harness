@@ -9,7 +9,7 @@ import { listTasks, formatStatus } from './status.mjs';
 
 const tmps = [];
 function mktmp() {
-  const d = fs.mkdtempSync(path.join(os.tmpdir(), 'sdlc-status-'));
+  const d = fs.mkdtempSync(path.join(os.tmpdir(), 'jig-status-'));
   tmps.push(d);
   scaffoldJig(d);
   return d;

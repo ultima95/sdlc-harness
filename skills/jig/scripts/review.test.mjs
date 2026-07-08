@@ -9,7 +9,7 @@ import { dedupeFindings, verdict, renderReview, writeReview } from './review.mjs
 
 const tmps = [];
 function newTask() {
-  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'sdlc-rev-'));
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'jig-rev-'));
   tmps.push(root);
   scaffoldJig(root);
   return createTask(root, { title: 'Fix login', type: 'bug', date: new Date(2026, 6, 6) }).taskDir;

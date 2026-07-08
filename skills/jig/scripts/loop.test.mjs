@@ -9,7 +9,7 @@ import { bumpLoop, resetLoop } from './loop.mjs';
 
 const tmps = [];
 function newTask() {
-  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'sdlc-loop-'));
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'jig-loop-'));
   tmps.push(root);
   scaffoldJig(root);
   return createTask(root, { title: 'Fix login', type: 'bug', date: new Date(2026, 6, 6) }).taskDir;

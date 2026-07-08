@@ -8,7 +8,7 @@ import { createTask } from './new-task.mjs';
 
 const tmps = [];
 function mktmp() {
-  const d = fs.mkdtempSync(path.join(os.tmpdir(), 'sdlc-task-'));
+  const d = fs.mkdtempSync(path.join(os.tmpdir(), 'jig-task-'));
   tmps.push(d);
   scaffoldJig(d);
   return d;

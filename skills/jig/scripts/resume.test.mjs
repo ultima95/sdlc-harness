@@ -10,7 +10,7 @@ import { resumableTasks } from './resume.mjs';
 
 const tmps = [];
 function mktmp() {
-  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'sdlc-res-'));
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'jig-res-'));
   tmps.push(root);
   scaffoldJig(root);
   return root;

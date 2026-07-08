@@ -32,7 +32,7 @@ const SCRIPT = path.join(path.dirname(fileURLToPath(import.meta.url)), 'config.m
 
 const tmps = [];
 function scaffolded() {
-  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'sdlc-config-'));
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'jig-config-'));
   tmps.push(root);
   scaffoldJig(root);
   return root;
@@ -82,7 +82,7 @@ test('set rejects an invalid value and leaves the file unchanged', () => {
 });
 
 test('missing .jig/config.yml tells the user to run init', () => {
-  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'sdlc-noconf-'));
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'jig-noconf-'));
   tmps.push(root);
   const res = run(root, ['show']);
   assert.equal(res.status, 1);

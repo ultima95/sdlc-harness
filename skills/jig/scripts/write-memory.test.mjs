@@ -6,7 +6,7 @@ import path from 'node:path';
 import { mergeFindings, renderMemory, writeMemory } from './write-memory.mjs';
 
 const tmps = [];
-function mktmp() { const d = fs.mkdtempSync(path.join(os.tmpdir(), 'sdlc-mem-')); tmps.push(d); return d; }
+function mktmp() { const d = fs.mkdtempSync(path.join(os.tmpdir(), 'jig-mem-')); tmps.push(d); return d; }
 afterEach(() => { while (tmps.length) fs.rmSync(tmps.pop(), { recursive: true, force: true }); });
 
 test('mergeFindings unions arrays, dedupes by key, first non-empty scalar wins', () => {

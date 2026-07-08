@@ -7,7 +7,7 @@ import { scaffoldJig } from './scaffold.mjs';
 
 const tmps = [];
 function mktmp() {
-  const d = fs.mkdtempSync(path.join(os.tmpdir(), 'sdlc-scaffold-'));
+  const d = fs.mkdtempSync(path.join(os.tmpdir(), 'jig-scaffold-'));
   tmps.push(d);
   return d;
 }

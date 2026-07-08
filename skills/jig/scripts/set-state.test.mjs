@@ -9,7 +9,7 @@ import { setPhase, advance, setGate, setField } from './set-state.mjs';
 
 const tmps = [];
 function newTask() {
-  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'sdlc-set-'));
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'jig-set-'));
   tmps.push(root);
   scaffoldJig(root);
   return createTask(root, { title: 'Fix login', type: 'bug', date: new Date(2026, 6, 6) }).taskDir;
