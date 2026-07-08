@@ -1,9 +1,9 @@
 {
-  "name": "sdlc-harness",
-  "version": "0.3.0",
+  "name": "jig",
+  "version": "0.4.0",
   "private": true,
   "type": "module",
-  "description": "Portable SDLC harness for AI coding agents, shipped as a Claude Code skill.",
+  "description": "Jig — a portable, gated software development lifecycle for AI coding agents, shipped as a Claude Code skill.",
   "engines": { "node": ">=18" },
   "scripts": {
     "test": "node --test"

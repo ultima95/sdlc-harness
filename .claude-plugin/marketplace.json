@@ -4,9 +4,9 @@
   "owner": { "name": "ultima95" },
   "plugins": [
     {
-      "name": "sdlc-harness",
+      "name": "jig",
       "source": ".",
-      "description": "Portable gated SDLC for AI coding agents (understand -> intake -> spec&plan -> implement -> test -> review -> ship)."
+      "description": "Jig — portable gated software development lifecycle for AI coding agents (understand -> intake -> spec&plan -> implement -> test -> review -> ship)."
     }
   ]
 }
