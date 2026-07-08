@@ -100,11 +100,20 @@ test('applySet rejects an unknown key', () => {
 
 test('applySet throws when a schema key is absent from the config', () => {
   const partial = 'gates:\n  spec_plan: hard\n';
-  assert.throws(() => applySet(partial, 'gates.review', 'soft'), /re-run \/sdlc init/);
+  assert.throws(() => applySet(partial, 'gates.review', 'soft'), /re-run \/jig init/);
 });
 
 test('schema and template leaf keys stay in sync (drift guard)', () => {
   const templateKeys = [...parseConfig(templateText).leaves.keys()].sort();
   const schemaKeys = Object.keys(SCHEMA).sort();
   assert.deepEqual(templateKeys, schemaKeys);
+});
+
+test('legacy git.track_sdlc key validates as git.track_state', () => {
+  const model = parseConfig('git:\n  track_sdlc: false\n');
+  assert.equal(getValue(model, 'git.track_state'), false);
+  const unknown = validate(model).filter(
+    (res) => res.level === 'err' && res.note.startsWith('unknown key'),
+  );
+  assert.deepEqual(unknown.map((res) => res.key), []);
 });

@@ -1,7 +1,7 @@
-// Minimal reader/validator/editor for the harness's own .sdlc/config.yml.
+// Minimal reader/validator/editor for Jig's own .jig/config.yml.
 // Pure text in, text/data out — no file IO (the CLI does that). Zero deps.
 
-// --- Schema: every leaf key the harness config may contain. ---
+// --- Schema: every leaf key the Jig config may contain. ---
 export const SCHEMA = {
   'project.build': { type: 'string', placeholder: /^echo 'set project\.build/ },
   'project.test':  { type: 'string', placeholder: /^echo 'set project\.test/ },
@@ -20,7 +20,7 @@ export const SCHEMA = {
   'review.dimensions': { type: 'list' },
   'review.verify':     { type: 'enum', allowed: ['adversarial', 'off'] },
   'ship.mode':      { type: 'enum', allowed: ['commit', 'pr'] },
-  'git.track_sdlc':    { type: 'bool' },
+  'git.track_state':   { type: 'bool' },
   'git.branch':        { type: 'bool' },
   'git.base':          { type: 'string' },
   'git.push':          { type: 'bool' },
@@ -28,7 +28,10 @@ export const SCHEMA = {
   'git.delete_remote': { type: 'bool' },
 };
 
-// --- Parser: indentation-stack over the YAML subset the harness emits. ---
+// Legacy key names accepted for back-compat, normalized to their current key.
+export const ALIASES = { 'git.track_sdlc': 'git.track_state' };
+
+// --- Parser: indentation-stack over the YAML subset Jig emits. ---
 export function parseConfig(text) {
   const lines = text.split('\n');
   const leaves = new Map();
@@ -40,7 +43,7 @@ export function parseConfig(text) {
     const indent = raw.length - raw.trimStart().length;
     const m = raw.match(/^(\s*)([A-Za-z0-9_]+):\s*(.*)$/);
     if (!m) {
-      const e = new Error(`cannot parse .sdlc/config.yml line ${i + 1}: ${raw}`);
+      const e = new Error(`cannot parse .jig/config.yml line ${i + 1}: ${raw}`);
       e.line = i + 1;
       throw e;
     }
@@ -51,7 +54,7 @@ export function parseConfig(text) {
       stack.push({ indent, key });               // map header
     } else {
       const dotted = [...stack.map((s) => s.key), key].join('.');
-      leaves.set(dotted, { value: parseScalar(valuePart), lineIndex: i });
+      leaves.set(ALIASES[dotted] || dotted, { value: parseScalar(valuePart), lineIndex: i });
     }
   }
   return { lines, leaves };
@@ -147,7 +150,7 @@ export function applySet(text, keyPath, rawValue) {
   const model = parseConfig(text);
   const leaf = model.leaves.get(keyPath);
   if (!leaf) {
-    throw new Error(`key ${keyPath} not present in .sdlc/config.yml — re-run /sdlc init or add it by hand`);
+    throw new Error(`key ${keyPath} not present in .jig/config.yml — re-run /jig init or add it by hand`);
   }
   const lines = text.split('\n');
   const m = lines[leaf.lineIndex].match(/^(\s*[A-Za-z0-9_]+:)(\s*)(.*)$/);
