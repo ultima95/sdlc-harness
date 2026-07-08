@@ -1,38 +1,40 @@
 ---
-name: sdlc
-description: Run a gated software development life cycle for a repo. Use for `/sdlc init` (understand the codebase and scaffold project memory), `/sdlc task "<request>"` (start an issue/bug/feature through spec→implement→test→review→ship), `/sdlc status`, `/sdlc config` (view/set/validate settings), `/sdlc memory-refresh`, and `/sdlc resume`. Triggers on "sdlc", "run the lifecycle", "start a task", "sdlc init/status".
+name: jig
+description: Run a gated software development lifecycle for a repo. Use for `/jig init` (understand the codebase and scaffold project memory), `/jig task "<request>"` (start an issue/bug/feature through spec→implement→test→review→ship), `/jig status`, `/jig config` (view/set/validate settings), `/jig memory-refresh`, and `/jig resume`. Triggers on "jig", "run the lifecycle", "start a task", "sdlc", "sdlc init/status".
 ---
 
-# SDLC Conductor
+# Jig
 
-You drive a repeatable software development life cycle for the current repository.
+A jig holds the work and guides the tool so every cut comes out true. This skill
+holds a task and guides the agent through a repeatable, gated software development
+lifecycle for the current repository, so every task runs the same accurate path.
 Deterministic mechanics are Node scripts bundled in this skill under `scripts/`;
 you run them and interpret the output. `<SKILL_DIR>` below is this skill's base
 directory — use its absolute path when running commands. Node.js ≥ 18 is required.
 
 ## Dispatch
 
-Parse the sub-command from the user's invocation (the word after `/sdlc`, or infer
+Parse the sub-command from the user's invocation (the word after `/jig`, or infer
 from the request) and follow the matching section. If none matches, run **status**
 and show the available sub-commands.
 
 ### init
-Scaffold `.sdlc/`, then run Phase 0 to build Project Memory.
+Scaffold `.jig/`, then run Phase 0 to build Project Memory.
 
 1. Run: `node "<SKILL_DIR>/scripts/scaffold.mjs" "$(pwd)"` and report created vs. skipped.
 2. Run **Phase 0 — understand the codebase**: follow `<SKILL_DIR>/phases/understand.md`
-   to fan out explorer subagents, merge their findings, and populate `.sdlc/memory/`.
-3. **Decide whether `.sdlc/` is tracked in git** (git repo only) — ask the developer:
-   - **Track it (recommended)** — the harness state (spec, plan, progress, review, memory,
+   to fan out explorer subagents, merge their findings, and populate `.jig/memory/`.
+3. **Decide whether `.jig/` is tracked in git** (git repo only) — ask the developer:
+   - **Track it (recommended)** — Jig state (spec, plan, progress, review, memory,
      backlog) is git-versioned and shared, committed alongside the code it describes. Set
-     `git.track_sdlc: true` in `.sdlc/config.yml`, then commit the scaffold: `git add .sdlc &&
-     git commit -m "chore: initialize sdlc harness"`. If the base is protected and rejects a
-     direct commit, tell the developer to commit `.sdlc/` (or open a PR).
-   - **Don't track it** — `.sdlc/` stays local-only (never dirties the tree, not shared). Set
-     `git.track_sdlc: false`, add `.sdlc/` to `.gitignore`, and commit that:
-     `git add .gitignore && git commit -m "chore: ignore .sdlc harness state"`.
+     `git.track_state: true` in `.jig/config.yml`, then commit the scaffold: `git add .jig &&
+     git commit -m "chore: initialize jig"`. If the base is protected and rejects a
+     direct commit, tell the developer to commit `.jig/` (or open a PR).
+   - **Don't track it** — `.jig/` stays local-only (never dirties the tree, not shared). Set
+     `git.track_state: false`, add `.jig/` to `.gitignore`, and commit that:
+     `git add .gitignore && git commit -m "chore: ignore .jig state"`.
 4. Report which memory files were populated and suggest the user skim
-   `.sdlc/memory/index.md`.
+   `.jig/memory/index.md`.
 5. Do **not** overwrite an existing config unless the user explicitly asks (`--force`).
 
 ### task
@@ -47,8 +49,8 @@ Create a new task folder for an issue/bug/feature.
 3. Run: `node "<SKILL_DIR>/scripts/new-task.mjs" "<title>" <type> <track>`
    (omit `<track>` to accept the type default).
 4. Report the created `taskId`, its `track`, and path
-   (`.sdlc/tasks/<YYYYMMDD>/<slug>/`).
-5. The created task folder is `<taskDir>` (`.sdlc/tasks/<YYYYMMDD>/<slug>/`), at phase `intake`.
+   (`.jig/tasks/<YYYYMMDD>/<slug>/`).
+5. The created task folder is `<taskDir>` (`.jig/tasks/<YYYYMMDD>/<slug>/`), at phase `intake`.
 6. Run **Phase 1 — Intake & Clarify**: follow `<SKILL_DIR>/phases/intake.md` (pass
    `<taskDir>`). This is an interactive dialogue with the developer.
 7. Run **Phase 2 — Spec & Plan**: follow `<SKILL_DIR>/phases/spec-plan.md` (pass
@@ -59,7 +61,7 @@ Create a new task folder for an issue/bug/feature.
    **Phase 5 — Review** (`<SKILL_DIR>/phases/review.md`, review gate), then
    **Phase 6 — Ship** (`<SKILL_DIR>/phases/ship.md`). Ship pushes the branch and opens a PR or
    leaves commits (`ship.mode`), refreshes Project Memory, and moves the task to `shipped` (a
-   branch awaiting merge) or `done`. When a `shipped` task's PR is merged, run **`/sdlc cleanup`**
+   branch awaiting merge) or `done`. When a `shipped` task's PR is merged, run **`/jig cleanup`**
    to verify the merge, delete the branch, return to base, and close the task.
 
 ### status
@@ -69,7 +71,7 @@ Show all tasks and their current phase/gate state.
 2. Print the output verbatim.
 
 ### config
-View, edit, and validate `.sdlc/config.yml`. Backed by `scripts/config.mjs`; run it from the
+View, edit, and validate `.jig/config.yml`. Backed by `scripts/config.mjs`; run it from the
 repo root (`$(pwd)`) and relay the output. Keys are dotted paths (e.g. `gates.review`).
 
 1. **show** (default): `node "<SKILL_DIR>/scripts/config.mjs" show` — print settings grouped
@@ -81,7 +83,7 @@ repo root (`$(pwd)`) and relay the output. Keys are dotted paths (e.g. `gates.re
 4. **check**: `node "<SKILL_DIR>/scripts/config.mjs" check` — static validation
    (`OK`/`WARN`/`ERR` + summary); exits non-zero if any `ERR`.
 
-When `git.track_sdlc: true`, commit the changed `.sdlc/config.yml` after a `set`.
+When `git.track_state: true`, commit the changed `.jig/config.yml` after a `set`.
 
 ### memory-refresh
 Re-run Phase 0 to refresh Project Memory (e.g., after significant changes).
@@ -106,7 +108,7 @@ Resume a paused task from its saved state.
 2. Read its state: `node "<SKILL_DIR>/scripts/resume.mjs" "$(pwd)" "<taskId>"` (prints
    `state.json`); note the current `phase`.
 3. Recover context: read the task's `progress.md` (and `spec.md`) under
-   `.sdlc/tasks/<taskId>/`.
+   `.jig/tasks/<taskId>/`.
 4. Re-enter that phase by following its guide (passing the task folder):
    `intake`→`phases/intake.md`, `spec_plan`→`phases/spec-plan.md`,
    `implement`→`phases/implement.md`, `test`→`phases/test.md`,
@@ -116,39 +118,39 @@ Resume a paused task from its saved state.
 5. Continue the lifecycle from there.
 
 ### backlog
-Groom deferred work in `.sdlc/backlog.md` — e.g. when there's free time to burn it down.
+Groom deferred work in `.jig/backlog.md` — e.g. when there's free time to burn it down.
 This is a maintenance flow, not a lifecycle phase; it reads and prunes the file and promotes
 items into normal tasks. No dedicated script.
 
-1. List the open items (`- [ ]`) from `.sdlc/backlog.md`. If there are none, say the backlog
+1. List the open items (`- [ ]`) from `.jig/backlog.md`. If there are none, say the backlog
    is empty and stop.
 2. Context-check each item (or the ones the user cares about) — index-first via
-   `.sdlc/memory/`, plus the code: is it still relevant, already solved incidentally, a
+   `.jig/memory/`, plus the code: is it still relevant, already solved incidentally, a
    duplicate, or stale? Give your read per item.
 3. **Prune** (with the developer's OK): check off (`- [x]`) or delete items that are already
-   done, obsolete, or no longer wanted. Commit the pruned `.sdlc/backlog.md` when `git.track_sdlc`.
+   done, obsolete, or no longer wanted. Commit the pruned `.jig/backlog.md` when `git.track_state`.
 4. **Promote** an item the developer picks up now: start it as a normal task — run the
    **task** flow (see `### task`) with the item text as the request. When that task reaches
-   `shipped`/`done`, check its source item off in `.sdlc/backlog.md`.
+   `shipped`/`done`, check its source item off in `.jig/backlog.md`.
 5. Report: items pruned, item(s) promoted to tasks, and how many remain open.
 
-## Committing `.sdlc/` state
-When `.sdlc/` is tracked (`git.track_sdlc: true`, chosen at init), its files — a task's
+## Committing `.jig/` state
+When `.jig/` is tracked (`git.track_state: true`, chosen at init), its files — a task's
 `spec.md`/`progress.md`/`review.md`/`state.json`, refreshed `memory/*.md`, `backlog.md` — are
 **committed alongside the code they describe**, never left as a trailing pile of dirt:
-- **Intake & Spec-Plan** run on the base before the feature branch exists — they write `.sdlc/`
+- **Intake & Spec-Plan** run on the base before the feature branch exists — they write `.jig/`
   but do **not** commit. Creating the branch at Implement carries those changes onto it, where
   they fold into the first code commit.
-- **Implement / Test / Review** stage `.sdlc/` in the same commit as the code/tests/fixes. When
+- **Implement / Test / Review** stage `.jig/` in the same commit as the code/tests/fixes. When
   a phase has no code to ride with (a clean Review pass, Ship's memory refresh), commit the
-  `.sdlc/` changes on their own — on a feature branch these still merge via the PR.
+  `.jig/` changes on their own — on a feature branch these still merge via the PR.
 - **Cleanup** runs on the base after the merge — commit and push (`git.push`) the small final
   state there directly; if the base is protected and rejects it, report and leave it.
 
-When `.sdlc/` is **not** tracked (`git.track_sdlc: false`, gitignored) or the repo is non-git,
-skip all of this — `.sdlc/` lives on disk and is still resumable.
+When `.jig/` is **not** tracked (`git.track_state: false`, gitignored) or the repo is non-git,
+skip all of this — `.jig/` lives on disk and is still resumable.
 
 ## Notes
 - All commands operate on the current working directory as the project root.
-- If `.sdlc/` does not exist when running `task`/`status`, tell the user to run
-  `/sdlc init` first.
+- If `.jig/` does not exist when running `task`/`status`, tell the user to run
+  `/jig init` first.
