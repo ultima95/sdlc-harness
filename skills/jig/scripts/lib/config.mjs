@@ -144,13 +144,14 @@ function r(level, key, value, note) {
 
 // --- Editor: rewrite one key's line, preserving indentation and comments. ---
 export function applySet(text, keyPath, rawValue) {
-  const spec = SCHEMA[keyPath];
+  const key = ALIASES[keyPath] || keyPath;
+  const spec = SCHEMA[key];
   if (!spec) throw new Error(`unknown config key: ${keyPath}`);
   const value = coerce(spec, rawValue);
   const model = parseConfig(text);
-  const leaf = model.leaves.get(keyPath);
+  const leaf = model.leaves.get(key);
   if (!leaf) {
-    throw new Error(`key ${keyPath} not present in .jig/config.yml — re-run /jig init or add it by hand`);
+    throw new Error(`key ${key} not present in .jig/config.yml — re-run /jig init or add it by hand`);
   }
   const lines = text.split('\n');
   const m = lines[leaf.lineIndex].match(/^(\s*[A-Za-z0-9_]+:)(\s*)(.*)$/);

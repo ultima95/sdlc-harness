@@ -117,3 +117,11 @@ test('legacy git.track_sdlc key validates as git.track_state', () => {
   );
   assert.deepEqual(unknown.map((res) => res.key), []);
 });
+
+test('applySet targets a legacy git.track_sdlc line via either key name', () => {
+  const before = 'git:\n  track_sdlc: false\n';
+  // the legacy key name still works as a setter argument...
+  assert.equal(applySet(before, 'git.track_sdlc', 'true'), 'git:\n  track_sdlc: true\n');
+  // ...and the current key name resolves to the same physical line.
+  assert.equal(applySet(before, 'git.track_state', 'true'), 'git:\n  track_sdlc: true\n');
+});
