@@ -1,8 +1,8 @@
-# .sdlc/config.yml — SDLC harness configuration for this repo.
+# .jig/config.yml — Jig configuration for this repo.
 project:
-  build: "echo 'set project.build in .sdlc/config.yml'"
-  test:  "echo 'set project.test in .sdlc/config.yml'"
-  lint:  "echo 'set project.lint in .sdlc/config.yml'"
+  build: "echo 'set project.build in .jig/config.yml'"
+  test:  "echo 'set project.test in .jig/config.yml'"
+  lint:  "echo 'set project.lint in .jig/config.yml'"
 gates:
   spec_plan: hard        # hard | soft | off
   review:    hard        # hard | soft | off
@@ -26,9 +26,9 @@ review:
 ship:
   mode: commit            # commit | pr  (open a PR with gh, or leave commits for the dev)
 git:
-  track_sdlc: true        # commit .sdlc/ state alongside code (chosen at init); false = gitignore it, local-only
+  track_state: true        # commit .jig/ state alongside code (chosen at init); false = gitignore it, local-only
   branch:  true           # create a feature branch <type>/<slug> at Implement; false = current branch
   base:    auto           # auto = detect origin/HEAD; or explicit "main" / "dev"
   push:    true           # push the branch during Ship
-  cleanup: on_merge       # on_merge = /sdlc cleanup deletes after a verified merge; off = never
+  cleanup: on_merge       # on_merge = /jig cleanup deletes after a verified merge; off = never
   delete_remote: true     # on cleanup, also delete the remote branch

@@ -16,7 +16,7 @@ gate_review: pending    # pending | approved
 <!-- One-line statement of the task. -->
 
 ### Context
-<!-- Background + links into .sdlc/memory (architecture.md, modules.md). -->
+<!-- Background + links into .jig/memory (architecture.md, modules.md). -->
 
 ### Problem / Goal
 <!-- What the developer actually wants, distilled from the Intake dialogue. -->
@@ -39,7 +39,7 @@ gate_review: pending    # pending | approved
 <!-- Chosen approach + one line on why (alternatives considered). -->
 
 ### Affected files & modules
-- <!-- Concrete paths, from .sdlc/memory/modules.md + risks.md. -->
+- <!-- Concrete paths, from .jig/memory/modules.md + risks.md. -->
 
 ### Steps
 1. <!-- Ordered; each step = a concrete change mapped to file(s). -->

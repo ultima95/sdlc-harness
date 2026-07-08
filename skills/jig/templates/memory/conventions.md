@@ -1,3 +1,3 @@
 # Conventions
 
-_Code style, patterns, and idioms. Populated by `/sdlc init` (Phase 0)._
+_Code style, patterns, and idioms. Populated by `/jig init` (Phase 0)._

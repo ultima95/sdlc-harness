@@ -1,3 +1,3 @@
 # Glossary
 
-_Domain terms. Populated by `/sdlc init` (Phase 0)._
+_Domain terms. Populated by `/jig init` (Phase 0)._

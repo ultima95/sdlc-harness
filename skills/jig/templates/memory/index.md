@@ -1,6 +1,6 @@
 # Project Memory — Index
 
-_Entry point / table of contents. Populated by `/sdlc init` (Phase 0)._
+_Entry point / table of contents. Populated by `/jig init` (Phase 0)._
 
 - [Architecture](architecture.md)
 - [Modules](modules.md)
