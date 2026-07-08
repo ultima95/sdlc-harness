@@ -12,6 +12,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Release notes are now sourced from this `CHANGELOG.md` (the Release workflow publishes
   the tagged version's section as the release body), instead of auto-generated commit lists.
 
+## [0.4.0] - 2026-07-08
+
+### Changed
+- **Renamed the project from "SDLC Harness" to Jig.** The command is now `/jig`
+  (was `/sdlc`); the skill, npm package, and plugin are named `jig`.
+- Renamed the config key `git.track_sdlc` → `git.track_state`.
+
+### Backward compatibility
+- The state directory resolves to `.jig/` for new repos but still recognizes an
+  existing `.sdlc/` directory, so repos scaffolded before the rename keep working.
+- A legacy `git.track_sdlc` key in `.sdlc/config.yml` is accepted as an alias for
+  `git.track_state`.
+- `sdlc` is retained as a discovery keyword/trigger.
+
 ## [0.3.0] - 2026-07-07
 
 ### Added
@@ -56,7 +70,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   Ship, and `/sdlc cleanup` after merge.
 - `/sdlc backlog` to groom deferred work in `.sdlc/backlog.md`.
 
-[Unreleased]: https://github.com/ultima95/sdlc-harness/compare/v0.3.0...HEAD
+[Unreleased]: https://github.com/ultima95/jig/compare/v0.4.0...HEAD
+[0.4.0]: https://github.com/ultima95/jig/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/ultima95/sdlc-harness/compare/v0.2.2...v0.3.0
 [0.2.2]: https://github.com/ultima95/sdlc-harness/compare/v0.2.1...v0.2.2
 [0.2.1]: https://github.com/ultima95/sdlc-harness/releases/tag/v0.2.1

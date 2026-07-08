@@ -1,5 +1,6 @@
 node_modules/
-# Harness runtime data is per-target-repo, never committed in this source repo:
+# Jig runtime data is per-target-repo, never committed in this source repo:
+.jig/
 .sdlc/
 # Scratch used by tests:
 .tmp-test/

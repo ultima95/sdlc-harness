@@ -1,17 +1,17 @@
 <div align="center">
 
-# 🏗️ SDLC Harness
+# 🏗️ Jig
 
-**A portable, gated software development life cycle for AI coding agents — shipped as a single Claude Code skill.**
+**A jig for AI coding agents — a portable, gated software development lifecycle shipped as a single Claude Code skill.**
 
 Understand the codebase once, then drive every task through a repeatable, human‑gated lifecycle: **intake → spec & plan → implement → test → review → ship**.
 
 ![Claude Code skill](https://img.shields.io/badge/Claude%20Code-skill-8A2BE2)
-![tests](https://img.shields.io/badge/tests-83%20passing-2ea44f)
+![tests](https://img.shields.io/badge/tests-87%20passing-2ea44f)
 ![node](https://img.shields.io/badge/node-%E2%89%A5%2018-339933?logo=nodedotjs&logoColor=white)
 ![dependencies](https://img.shields.io/badge/dependencies-zero-0aa)
 ![install](https://img.shields.io/badge/install-npx%20skills-111)
-![version](https://img.shields.io/badge/version-0.3.0-informational)
+![version](https://img.shields.io/badge/version-0.4.0-informational)
 
 </div>
 
@@ -19,7 +19,7 @@ Understand the codebase once, then drive every task through a repeatable, human�
 
 ## ✨ Why
 
-AI coding agents are great at *writing code* and bad at *process*: they skip clarification, forget project conventions, ship untested changes, and re‑learn the codebase every session. The SDLC Harness gives an agent a **repeatable lifecycle** with human checkpoints, bounded fix‑loops, adversarial review, and a durable **Project Memory** — so the same disciplined flow runs on every task, in any repo.
+AI coding agents are great at *writing code* and bad at *process*: they skip clarification, forget project conventions, ship untested changes, and re‑learn the codebase every session. Jig gives an agent a **repeatable lifecycle** with human checkpoints, bounded fix‑loops, adversarial review, and a durable **Project Memory** — so the same disciplined flow runs on every task, in any repo.
 
 - 🧠 **Understands your codebase first** — Phase 0 fans out explorers and writes durable Project Memory.
 - 🚦 **Human gates where they matter** — approve the plan, approve the ship. Configurable per task.
@@ -47,7 +47,7 @@ flowchart LR
     T --> RV["Review<br/>(fan-out + verify)"]
     RV -->|"real findings"| IM
     RV -->|"🚦 approve to ship"| SH["Ship<br/>(branch · push · PR)"]
-    SH -->|"awaiting merge"| CL["Cleanup<br/>(/sdlc cleanup)"]
+    SH -->|"awaiting merge"| CL["Cleanup<br/>(/jig cleanup)"]
     CL --> DONE(["✅ done"])
   end
 
@@ -64,17 +64,17 @@ Two invariants no path may drop: **a test proves the change**, and **Ship refres
 **Via the skills CLI** (recommended):
 
 ```bash
-npx skills add ultima95/sdlc-harness
+npx skills add ultima95/jig
 ```
 
 **Or as a Claude Code plugin:**
 
 ```text
-/plugin marketplace add ultima95/sdlc-harness
-/plugin install sdlc-harness@ultima95
+/plugin marketplace add ultima95/jig
+/plugin install jig@ultima95
 ```
 
-Then **restart Claude Code** so the `sdlc` skill is picked up. Requires Claude Code + **Node.js ≥ 18**.
+Then **restart Claude Code** so the `jig` skill is picked up. Requires Claude Code + **Node.js ≥ 18**.
 
 ---
 
@@ -82,14 +82,14 @@ Then **restart Claude Code** so the `sdlc` skill is picked up. Requires Claude C
 
 | Command | What it does |
 | --- | --- |
-| `/sdlc init` | 🧠 Investigate the repo and build **Project Memory** in `.sdlc/memory/`. |
-| `/sdlc task "<request>"` | 🎫 Take an issue / bug / feature from intake all the way to shipped. |
-| `/sdlc status` | 📋 List tasks and their current phase / gate state. |
-| `/sdlc config [get\|set\|check]` | ⚙️ View, set, or validate `.sdlc/config.yml`. |
-| `/sdlc resume [<YYYYMMDD>/<slug>]` | ⏯️ Resume a paused task at its saved phase. |
-| `/sdlc cleanup [<YYYYMMDD>/<slug>]` | 🧹 After a merged PR: verify the merge, delete the branch, return to the base branch, and close the task. |
-| `/sdlc backlog` | 🗒️ Groom deferred work in `.sdlc/backlog.md`: review with context, prune resolved/stale items, promote one to a task. |
-| `/sdlc memory-refresh` | ♻️ Re‑run Phase 0 to refresh Project Memory. |
+| `/jig init` | 🧠 Investigate the repo and build **Project Memory** in `.jig/memory/`. |
+| `/jig task "<request>"` | 🎫 Take an issue / bug / feature from intake all the way to shipped. |
+| `/jig status` | 📋 List tasks and their current phase / gate state. |
+| `/jig config [get\|set\|check]` | ⚙️ View, set, or validate `.jig/config.yml`. |
+| `/jig resume [<YYYYMMDD>/<slug>]` | ⏯️ Resume a paused task at its saved phase. |
+| `/jig cleanup [<YYYYMMDD>/<slug>]` | 🧹 After a merged PR: verify the merge, delete the branch, return to the base branch, and close the task. |
+| `/jig backlog` | 🗒️ Groom deferred work in `.jig/backlog.md`: review with context, prune resolved/stale items, promote one to a task. |
+| `/jig memory-refresh` | ♻️ Re‑run Phase 0 to refresh Project Memory. |
 
 ---
 
@@ -107,14 +107,14 @@ The `track` scales *which phases run* and *how heavy the gates are* — auto‑s
 
 ## 🧭 How it works
 
-- **One skill, on‑demand guides.** A slim `SKILL.md` conductor dispatches sub‑commands and loads only the current phase guide from `phases/` — context stays lean.
+- **One skill, on‑demand guides.** A slim `SKILL.md` dispatcher loads only the current phase guide from `phases/` — context stays lean.
 - **Inline agent fan‑out.** Phase 0 explorers and Review reviewers/verifiers are dispatched inline via the Agent tool — no Workflow‑tool dependency, fully portable.
-- **Deterministic core, tested.** The mechanical parts — slug/date naming, state & gate transitions, bounded loop counters, findings dedupe + majority‑verdict, memory rendering — are dependency‑free Node scripts with **83 unit tests**.
-- **Everything is files.** `.sdlc/` holds `config.yml`, `backlog.md` (deferred work), `memory/*.md`, and `tasks/<YYYYMMDD>/<slug>/` (`spec.md` · `progress.md` · `review.md` · `state.json`) — git‑versioned (opt‑out at init) and resumable.
+- **Deterministic core, tested.** The mechanical parts — slug/date naming, state & gate transitions, bounded loop counters, findings dedupe + majority‑verdict, memory rendering — are dependency‑free Node scripts with **87 unit tests**.
+- **Everything is files.** `.jig/` holds `config.yml`, `backlog.md` (deferred work), `memory/*.md`, and `tasks/<YYYYMMDD>/<slug>/` (`spec.md` · `progress.md` · `review.md` · `state.json`) — git‑versioned (opt‑out at init) and resumable.
 
 ```text
-skills/sdlc/
-├── SKILL.md              # conductor: init · task · status · config · resume · cleanup · backlog · memory-refresh
+skills/jig/
+├── SKILL.md              # dispatcher: init · task · status · config · resume · cleanup · backlog · memory-refresh
 ├── phases/               # understand · intake · spec-plan · implement · test · review · ship
 ├── agents/               # explorer · reviewer · verifier  (inline subagent roles)
 ├── scripts/              # deterministic, unit-tested Node helpers (+ lib/)
@@ -125,7 +125,7 @@ skills/sdlc/
 
 ## ⚙️ Configuration
 
-`.sdlc/config.yml` (created by `/sdlc init`) controls the harness per repo:
+`.jig/config.yml` (created by `/jig init`) controls Jig per repo:
 
 - **`project`** — `build` / `test` / `lint` commands
 - **`gates`** — `spec_plan` & `review`: `hard | soft | off`
@@ -134,17 +134,17 @@ skills/sdlc/
 - **`loops`** — `max_test`, `max_review` (bounded fix‑loops)
 - **`review`** — `dimensions` + `verify: adversarial`
 - **`ship`** — `mode: commit | pr`
-- **`git`** — `track_sdlc` (commit `.sdlc/` state alongside code, or gitignore it — chosen at init) + feature-branch lifecycle: `branch` (create `<type>/<slug>` at Implement), `base` (`auto` or an explicit branch), `push`, `cleanup` (`on_merge | off`), `delete_remote`
+- **`git`** — `track_state` (commit `.jig/` state alongside code, or gitignore it — chosen at init) + feature-branch lifecycle: `branch` (create `<type>/<slug>` at Implement), `base` (`auto` or an explicit branch), `push`, `cleanup` (`on_merge | off`), `delete_remote`
 - **`memory`** — `graph: auto|on|off`, `refresh: on_ship|manual`
 
-Manage these with **`/sdlc config`**: `show` (view all), `get <key>`, `set <key> <value>` (validates and preserves comments), and `check` (validate — exits non-zero on errors, so it works in CI).
+Manage these with **`/jig config`**: `show` (view all), `get <key>`, `set <key> <value>` (validates and preserves comments), and `check` (validate — exits non-zero on errors, so it works in CI).
 
 ---
 
 ## 🧪 Development
 
 ```bash
-npm test    # runs the Node unit tests for the bundled scripts (83, zero deps)
+npm test    # runs the Node unit tests for the bundled scripts (87, zero deps)
 ```
 
 ---
