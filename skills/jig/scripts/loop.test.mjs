@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { scaffoldSdlc } from './scaffold.mjs';
+import { scaffoldJig } from './scaffold.mjs';
 import { createTask } from './new-task.mjs';
 import { bumpLoop, resetLoop } from './loop.mjs';
 
@@ -11,7 +11,7 @@ const tmps = [];
 function newTask() {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'sdlc-loop-'));
   tmps.push(root);
-  scaffoldSdlc(root);
+  scaffoldJig(root);
   return createTask(root, { title: 'Fix login', type: 'bug', date: new Date(2026, 6, 6) }).taskDir;
 }
 afterEach(() => { while (tmps.length) fs.rmSync(tmps.pop(), { recursive: true, force: true }); });

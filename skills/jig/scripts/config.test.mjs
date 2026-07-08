@@ -7,14 +7,14 @@ import { fileURLToPath } from 'node:url';
 import { execFileSync } from 'node:child_process';
 import { templatesDir } from './lib/paths.mjs';
 import { renderShow, renderCheck } from './config.mjs';
-import { scaffoldSdlc } from './scaffold.mjs';
+import { scaffoldJig } from './scaffold.mjs';
 
 const templateText = fs.readFileSync(path.join(templatesDir(), 'config.yml'), 'utf8');
 
 test('renderShow lists keys with allowed values and a check hint', () => {
   const out = renderShow(templateText);
   assert.match(out, /gates\.review\s+hard\s+\[hard \| soft \| off\]/);
-  assert.match(out, /Run `\/sdlc config check` to validate\./);
+  assert.match(out, /Run `\/jig config check` to validate\./);
 });
 
 test('renderCheck reports zero errors for the scaffold', () => {
@@ -34,7 +34,7 @@ const tmps = [];
 function scaffolded() {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'sdlc-config-'));
   tmps.push(root);
-  scaffoldSdlc(root);
+  scaffoldJig(root);
   return root;
 }
 afterEach(() => { while (tmps.length) fs.rmSync(tmps.pop(), { recursive: true, force: true }); });
@@ -54,7 +54,7 @@ test('check exits 0 on the scaffolded config', () => {
 
 test('check exits 1 when a value is invalid', () => {
   const root = scaffolded();
-  const cfg = path.join(root, '.sdlc', 'config.yml');
+  const cfg = path.join(root, '.jig', 'config.yml');
   fs.writeFileSync(cfg, fs.readFileSync(cfg, 'utf8').replace(/review:\s+hard/, 'review: maybe'));
   const res = run(root, ['check']);
   assert.equal(res.status, 1);
@@ -75,16 +75,16 @@ test('set writes the value and is read back by get', () => {
 
 test('set rejects an invalid value and leaves the file unchanged', () => {
   const root = scaffolded();
-  const cfg = path.join(root, '.sdlc', 'config.yml');
+  const cfg = path.join(root, '.jig', 'config.yml');
   const before = fs.readFileSync(cfg, 'utf8');
   assert.equal(run(root, ['set', 'gates.review', 'maybe']).status, 1);
   assert.equal(fs.readFileSync(cfg, 'utf8'), before);
 });
 
-test('missing .sdlc/config.yml tells the user to run init', () => {
+test('missing .jig/config.yml tells the user to run init', () => {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'sdlc-noconf-'));
   tmps.push(root);
   const res = run(root, ['show']);
   assert.equal(res.status, 1);
-  assert.match(res.stderr, /sdlc init/);
+  assert.match(res.stderr, /jig init/);
 });

@@ -1,6 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { sdlcPaths } from './lib/paths.mjs';
+import { jigPaths } from './lib/paths.mjs';
 
 function uniqStrings(arr) {
   const seen = new Set();
@@ -124,7 +124,7 @@ ${bullets(f.stack, (s) => `- ${s}`)}
 }
 
 export function writeMemory(projectRoot, findings) {
-  const { memoryDir } = sdlcPaths(projectRoot);
+  const { memoryDir } = jigPaths(projectRoot);
   fs.mkdirSync(memoryDir, { recursive: true });
   const rendered = renderMemory(findings);
   const written = [];
@@ -145,6 +145,6 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   const slices = sliceFiles.map((fp) => JSON.parse(fs.readFileSync(fp, 'utf8')));
   const findings = mergeFindings(slices);
   const written = writeMemory(projectRoot, findings);
-  console.log(`Wrote ${written.length} memory files to ${sdlcPaths(projectRoot).memoryDir}`);
+  console.log(`Wrote ${written.length} memory files to ${jigPaths(projectRoot).memoryDir}`);
   for (const w of written) console.log('  ', w);
 }

@@ -1,4 +1,4 @@
-// Minimal YAML front-matter field editor for the harness's own task files.
+// Minimal YAML front-matter field editor for Jig's own task files.
 // Operates only inside the leading `---` ... `---` block.
 export function setFrontMatterField(md, key, value) {
   const m = md.match(/^---\n([\s\S]*?)\n---/);

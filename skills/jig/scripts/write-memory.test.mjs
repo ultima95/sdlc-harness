@@ -56,11 +56,11 @@ test('renderMemory uses placeholders for empty sections (never blank)', () => {
   assert.match(r['risks.md'], /Not determined during Phase 0/);
 });
 
-test('writeMemory writes all 7 files under .sdlc/memory', () => {
+test('writeMemory writes all 7 files under .jig/memory', () => {
   const root = mktmp();
   const written = writeMemory(root, { overview: 'x' });
   assert.equal(written.length, 7);
-  const idx = path.join(root, '.sdlc', 'memory', 'index.md');
+  const idx = path.join(root, '.jig', 'memory', 'index.md');
   assert.ok(fs.existsSync(idx));
   assert.match(fs.readFileSync(idx, 'utf8'), /x/);
 });

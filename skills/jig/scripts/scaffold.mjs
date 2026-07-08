@@ -1,14 +1,14 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { sdlcPaths, templatesDir } from './lib/paths.mjs';
+import { jigPaths, templatesDir } from './lib/paths.mjs';
 
 const MEMORY_FILES = [
   'architecture.md', 'modules.md', 'conventions.md',
   'glossary.md', 'runbook.md', 'risks.md', 'index.md',
 ];
 
-export function scaffoldSdlc(targetRoot, { force = false } = {}) {
-  const p = sdlcPaths(targetRoot);
+export function scaffoldJig(targetRoot, { force = false } = {}) {
+  const p = jigPaths(targetRoot);
   const tpl = templatesDir();
   const created = [];
   const skipped = [];
@@ -34,8 +34,8 @@ export function scaffoldSdlc(targetRoot, { force = false } = {}) {
 
 if (import.meta.url === `file://${process.argv[1]}`) {
   const target = process.argv[2] || process.cwd();
-  const res = scaffoldSdlc(target, { force: process.argv.includes('--force') });
-  console.log(`Scaffolded .sdlc in ${target}`);
+  const res = scaffoldJig(target, { force: process.argv.includes('--force') });
+  console.log(`Scaffolded .jig in ${target}`);
   for (const f of res.created) console.log('  created', f);
   for (const f of res.skipped) console.log('  skipped (exists)', f);
 }

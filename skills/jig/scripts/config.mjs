@@ -1,5 +1,5 @@
 import fs from 'node:fs';
-import { sdlcPaths } from './lib/paths.mjs';
+import { jigPaths } from './lib/paths.mjs';
 import { parseConfig, validate, getValue, applySet, SCHEMA } from './lib/config.mjs';
 
 export function renderShow(text) {
@@ -17,7 +17,7 @@ export function renderShow(text) {
       : '';
     out.push(`  ${key.padEnd(34)} ${value}${allowed}`);
   }
-  out.push('', 'Run `/sdlc config check` to validate.');
+  out.push('', 'Run `/jig config check` to validate.');
   return out.join('\n');
 }
 
@@ -42,9 +42,9 @@ function display(v) {
 
 if (import.meta.url === `file://${process.argv[1]}`) {
   const [verb = 'show', a, b] = process.argv.slice(2);
-  const { config } = sdlcPaths(process.cwd());
+  const { config } = jigPaths(process.cwd());
   if (!fs.existsSync(config)) {
-    console.error('No .sdlc/config.yml found — run `/sdlc init` first.');
+    console.error('No .jig/config.yml found — run `/jig init` first.');
     process.exit(1);
   }
   const text = fs.readFileSync(config, 'utf8');

@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { scaffoldSdlc } from './scaffold.mjs';
+import { scaffoldJig } from './scaffold.mjs';
 import { createTask } from './new-task.mjs';
 import { listTasks, formatStatus } from './status.mjs';
 
@@ -11,7 +11,7 @@ const tmps = [];
 function mktmp() {
   const d = fs.mkdtempSync(path.join(os.tmpdir(), 'sdlc-status-'));
   tmps.push(d);
-  scaffoldSdlc(d);
+  scaffoldJig(d);
   return d;
 }
 afterEach(() => { while (tmps.length) fs.rmSync(tmps.pop(), { recursive: true, force: true }); });
@@ -42,10 +42,10 @@ test('formatStatus renders a header and a friendly empty message', () => {
 test('formatStatus hints cleanup when a task is shipped', () => {
   const out = formatStatus([{ task: '20260707/x', phase: 'shipped', gates: {} }]);
   assert.match(out, /shipped/);
-  assert.match(out, /\/sdlc cleanup/);
+  assert.match(out, /\/jig cleanup/);
 });
 
 test('formatStatus omits the cleanup hint when nothing is shipped', () => {
   const out = formatStatus([{ task: '20260707/x', phase: 'intake', gates: { spec_plan: 'pending' } }]);
-  assert.doesNotMatch(out, /\/sdlc cleanup/);
+  assert.doesNotMatch(out, /\/jig cleanup/);
 });

@@ -3,14 +3,14 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { scaffoldSdlc } from './scaffold.mjs';
+import { scaffoldJig } from './scaffold.mjs';
 import { createTask } from './new-task.mjs';
 
 const tmps = [];
 function mktmp() {
   const d = fs.mkdtempSync(path.join(os.tmpdir(), 'sdlc-task-'));
   tmps.push(d);
-  scaffoldSdlc(d);
+  scaffoldJig(d);
   return d;
 }
 afterEach(() => { while (tmps.length) fs.rmSync(tmps.pop(), { recursive: true, force: true }); });

@@ -1,6 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { sdlcPaths, templatesDir } from './lib/paths.mjs';
+import { jigPaths, templatesDir } from './lib/paths.mjs';
 import { slugify, uniqueSlug, dateStamp } from './lib/slug.mjs';
 import { newTaskState, writeState } from './lib/state.mjs';
 
@@ -21,7 +21,7 @@ export function createTask(projectRoot, { title, type = 'feature', track, date =
   const resolvedTrack = track ?? defaultTrack(type);
   if (!TRACKS.includes(resolvedTrack)) throw new Error(`invalid track: ${resolvedTrack} (expected ${TRACKS.join('|')})`);
 
-  const p = sdlcPaths(projectRoot);
+  const p = jigPaths(projectRoot);
   const stamp = dateStamp(date);
   const dayDir = path.join(p.tasksDir, stamp);
   fs.mkdirSync(dayDir, { recursive: true });
