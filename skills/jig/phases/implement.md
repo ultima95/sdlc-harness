@@ -12,7 +12,7 @@ Ask the developer which mode (unless the choice is obvious). Default: subagent-d
 - **Subagent-driven (recommended)** — delegate each ordered Step in `spec.md` Part 2
   to a FRESH subagent that implements just that step (TDD where sensible, self-review,
   commit). Review each subagent's result before dispatching the next. Best for
-  multi-step or larger changes; keeps the conductor's context lean.
+  multi-step or larger changes; keeps the main agent's context lean.
 - **Inline** — implement the steps directly in this session. Best for tiny changes
   (e.g., a one-line fix) or the `hotfix` track.
 Record the chosen mode in `progress.md`.
@@ -47,7 +47,7 @@ Record the chosen mode in `progress.md`.
    trailing pile** (see SKILL.md § Committing `.jig/` state):
    - Inline: `git add <code> .jig/` so each commit carries its progress/spec updates; the first
      commit also sweeps the Intake/Spec & Plan bookkeeping that rode onto the branch.
-   - Subagent-driven: the implementer commits its code step; the conductor folds the `.jig/`
+   - Subagent-driven: the implementer commits its code step; the main agent folds the `.jig/`
      updates into the phase's commits (add `.jig/` to the final step's commit, or one `.jig/`
      commit right after) so nothing is left uncommitted.
 4. Append a dated entry to `progress.md` (mode used, branch created, steps done, commits made).

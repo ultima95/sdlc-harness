@@ -1,7 +1,7 @@
 # Phase 1 — Intake & Clarify
 
 Goal: turn a raw request into an agreed understanding, through dialogue with the
-developer. This phase is INTERACTIVE — run by the conductor in the live session,
+developer. This phase is INTERACTIVE — run by the main agent in the live session,
 NOT a subagent. Scaled by the task's `track` (see `state.json` / `spec.md` front-matter).
 `<SKILL_DIR>` is this skill's base directory; `<taskDir>` is the task folder.
 
