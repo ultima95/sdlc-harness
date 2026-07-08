@@ -2,14 +2,14 @@
 
 Goal: after a human has merged the PR out-of-band, verify the merge, return to the base branch,
 delete the feature branch, and close the task. `<SKILL_DIR>` is this skill's base directory;
-`<taskDir>` is the task folder. Runs for a task in phase `shipped` (via `/sdlc cleanup`).
+`<taskDir>` is the task folder. Runs for a task in phase `shipped` (via `/jig cleanup`).
 
-Only runs when `.sdlc/config.yml` `git.cleanup: on_merge`. Merge is asynchronous and human — this
+Only runs when `.jig/config.yml` `git.cleanup: on_merge`. Merge is asynchronous and human — this
 phase is expected to run in a LATER session than Ship.
 
 ## Steps
 1. Read `state.json` for `branch`, `base`, and `pr`; read `ship.mode` + `git.*` from
-   `.sdlc/config.yml`. If there is no `branch`, there is nothing to clean — set phase `done`
+   `.jig/config.yml`. If there is no `branch`, there is nothing to clean — set phase `done`
    (`node "<SKILL_DIR>/scripts/set-state.mjs" "<taskDir>" advance`) and report.
 2. **Verify the branch was actually merged** — never delete otherwise:
    - `ship.mode: pr` (a `pr` is recorded): `gh pr view <pr> --json state,mergedAt`.
@@ -32,8 +32,8 @@ phase is expected to run in a LATER session than Ship.
 7. Record: `node "<SKILL_DIR>/scripts/progress.mjs" "<taskDir>" shipped "cleaned up: deleted <branch>, on <base>"`.
 8. Close the task: `node "<SKILL_DIR>/scripts/set-state.mjs" "<taskDir>" advance`
    (phase `shipped` → `done`).
-9. **Commit the final `.sdlc/` state on the base** when `git.track_sdlc` (see SKILL.md
-   § Committing `.sdlc/` state): `git add .sdlc && git commit -m "chore(sdlc): close <taskId>"`,
+9. **Commit the final `.jig/` state on the base** when `git.track_state` (see SKILL.md
+   § Committing `.jig/` state): `git add .jig && git commit -m "chore(jig): close <taskId>"`,
    then push it if `git.push` (default `true`): `git push`. If the base is protected and rejects
    the commit/push, report it and leave the change for the developer.
 10. Report: the branch deleted (local/remote), the base now checked out, and that the task is `done`.

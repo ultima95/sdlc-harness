@@ -12,7 +12,7 @@ Examine the change ONLY through your dimension's lens:
 - `correctness`: logic bugs, wrong edge cases, broken contracts, off-by-one.
 - `security`: injection, missing authz, secrets, unsafe/untrusted input.
 - `tests`: missing or weak tests vs. the acceptance criteria.
-- `conventions`: violations of `.sdlc/memory/conventions.md`.
+- `conventions`: violations of `.jig/memory/conventions.md`.
 
 ## Output — STRICT rules
 Return ONLY a JSON array (no prose, no markdown fences). Each finding:

@@ -9,7 +9,7 @@ Memory (index-first, lazy): load `conventions.md` (for the conventions dimension
 ## Steps
 1. Confirm phase is `review`. Identify the change under review (the task's commits/diff
    since it started) and the acceptance criteria from `spec.md`.
-2. **Fan out reviewers.** For each dimension in `.sdlc/config.yml` `review.dimensions`
+2. **Fan out reviewers.** For each dimension in `.jig/config.yml` `review.dimensions`
    (default: correctness, security, tests, conventions), dispatch a `reviewer` subagent
    (role: `<SKILL_DIR>/agents/reviewer.md`) IN PARALLEL, one per dimension. Collect each
    one's JSON findings array. For `fast`/`hotfix` tracks, a single-pass reviewer is fine.
@@ -22,8 +22,8 @@ Memory (index-first, lazy): load `conventions.md` (for the conventions dimension
    `real` or `refuted`). Keep the `verdict` on each finding.
 5. **Write the report.** Put the final findings (each with its `verdict`) in a JSON file and
    run `node "<SKILL_DIR>/scripts/review.mjs" write "<taskDir>" <findings.json>` to write
-   `review.md`. When `git.track_sdlc`, commit `review.md` with the `.sdlc/` state (see SKILL.md
-   § Committing `.sdlc/` state) — a standalone `.sdlc/` commit on a clean pass; when looping
+   `review.md`. When `git.track_state`, commit `review.md` with the `.jig/` state (see SKILL.md
+   § Committing `.jig/` state) — a standalone `.jig/` commit on a clean pass; when looping
    back to Implement, the fix commits there carry it.
 6. **Decide:**
    - **Confirmed `real` findings exist:** bump the loop
@@ -31,7 +31,7 @@ Memory (index-first, lazy): load `conventions.md` (for the conventions dimension
      `loops.max_review` (default 2). Under the limit → go back to Implement
      (`node "<SKILL_DIR>/scripts/set-state.mjs" "<taskDir>" phase implement`) to fix them,
      then re-run Test and Review. At/over the limit → STOP and escalate to the developer.
-   - **Clean (no `real` findings):** this is the **review gate**. Per `.sdlc/config.yml`
+   - **Clean (no `real` findings):** this is the **review gate**. Per `.jig/config.yml`
      `gates.review`: `hard` (default) and track not `hotfix` → present the change summary
      and ask the developer to APPROVE to ship. `soft`/`off` or `hotfix` → proceed.
      On approval:

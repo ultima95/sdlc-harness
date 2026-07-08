@@ -5,14 +5,14 @@ developer. This phase is INTERACTIVE — run by the conductor in the live sessio
 NOT a subagent. Scaled by the task's `track` (see `state.json` / `spec.md` front-matter).
 `<SKILL_DIR>` is this skill's base directory; `<taskDir>` is the task folder.
 
-Memory (index-first, lazy): read `.sdlc/memory/index.md` for orientation; load a
+Memory (index-first, lazy): read `.jig/memory/index.md` for orientation; load a
 specific memory file only if it helps clarify the request (e.g., `modules.md` to
-locate the affected area). Do NOT bulk-load `.sdlc/memory/`.
+locate the affected area). Do NOT bulk-load `.jig/memory/`.
 
 ## Steps
 1. Read the task's `spec.md` and `state.json`. Confirm phase is `intake`.
 2. Analyze the request: restate it in one line and list what is ambiguous or unstated.
-   Skim `.sdlc/backlog.md` (deferred work from past tasks) — if any open item relates to this
+   Skim `.jig/backlog.md` (deferred work from past tasks) — if any open item relates to this
    request, surface it so the developer can decide whether to fold it into scope now.
 3. Ask the developer clarifying questions — scaled by `track`:
    - `full`: brainstorm thoroughly — requirements, approach, acceptance criteria, edge cases.
@@ -30,6 +30,6 @@ locate the affected area). Do NOT bulk-load `.sdlc/memory/`.
 ## Notes
 - This phase is a conversation — do not guess when you can ask.
 - Lock decisions under "Assumptions & resolved questions" so they aren't re-litigated later.
-- Do **not** commit `.sdlc/` here — Intake runs on the base before the feature branch exists.
+- Do **not** commit `.jig/` here — Intake runs on the base before the feature branch exists.
   Its writes ride onto the branch at Implement and fold into the first commit (see SKILL.md
-  § Committing `.sdlc/` state).
+  § Committing `.jig/` state).

@@ -5,23 +5,23 @@ back to Implement, bounded by `loops.max_test`. `<SKILL_DIR>` is this skill's ba
 directory; `<taskDir>` is the task folder.
 
 Memory (index-first, lazy): load `runbook.md` for how to run tests if the command
-isn't already clear from `.sdlc/config.yml`.
+isn't already clear from `.jig/config.yml`.
 
 ## Steps
 1. Confirm phase is `test`. Satisfy the plan's Test plan — author any missing tests
    (each acceptance criterion → a test). For `hotfix`, ensure a regression test that
    reproduces the bug exists and now passes.
-2. Run the test command from `.sdlc/config.yml` `project.test`.
+2. Run the test command from `.jig/config.yml` `project.test`.
 3. If tests PASS: append a dated entry to `progress.md`, commit any new/updated tests —
-   staging the `.sdlc/` changes in the same commit when `git.track_sdlc` (see SKILL.md
-   § Committing `.sdlc/` state) — optionally reset the counter
+   staging the `.jig/` changes in the same commit when `git.track_state` (see SKILL.md
+   § Committing `.jig/` state) — optionally reset the counter
    (`node "<SKILL_DIR>/scripts/loop.mjs" "<taskDir>" reset test`), then advance to
    Review: `node "<SKILL_DIR>/scripts/set-state.mjs" "<taskDir>" advance`
    (phase `test` → `review`). Follow the Review phase (`<SKILL_DIR>/phases/review.md`).
 4. If tests FAIL:
    - Bump the counter: `node "<SKILL_DIR>/scripts/loop.mjs" "<taskDir>" bump test`
      (prints the new count).
-   - Compare it to `loops.max_test` in `.sdlc/config.yml` (default 3):
+   - Compare it to `loops.max_test` in `.jig/config.yml` (default 3):
      - Under the limit: return to Implement — move the phase back with
        `node "<SKILL_DIR>/scripts/set-state.mjs" "<taskDir>" phase implement`, feed the
        failures to the implementer to fix, then come back to Test.
