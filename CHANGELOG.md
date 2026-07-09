@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-07-09
+
 ### Added
 - `git.branch_from` config key (`remote` | `local`, default `remote`): Implement branches off
   a fresh `origin/<base>` by default, or the local `<base>` ref. Falls back to `local` (with a
