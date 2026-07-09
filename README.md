@@ -7,7 +7,7 @@
 Understand the codebase once, then drive every task through a repeatable, human‑gated lifecycle: **intake → spec & plan → implement → test → review → ship**.
 
 ![Claude Code skill](https://img.shields.io/badge/Claude%20Code-skill-8A2BE2)
-![tests](https://img.shields.io/badge/tests-88%20passing-2ea44f)
+![tests](https://img.shields.io/badge/tests-93%20passing-2ea44f)
 ![node](https://img.shields.io/badge/node-%E2%89%A5%2018-339933?logo=nodedotjs&logoColor=white)
 ![dependencies](https://img.shields.io/badge/dependencies-zero-0aa)
 ![install](https://img.shields.io/badge/install-npx%20skills-111)
@@ -134,7 +134,7 @@ skills/jig/
 - **`loops`** — `max_test`, `max_review` (bounded fix‑loops)
 - **`review`** — `dimensions` + `verify: adversarial`
 - **`ship`** — `mode: commit | pr`
-- **`git`** — `track_state` (commit `.jig/` state alongside code, or gitignore it — chosen at init) + feature-branch lifecycle: `branch` (create `<type>/<slug>` at Implement), `base` (`auto` or an explicit branch), `push`, `cleanup` (`on_merge | off`), `delete_remote`
+- **`git`** — `track_state` (commit `.jig/` state alongside code, or gitignore it — chosen at init) + feature-branch lifecycle: `branch` (create `<type>/<slug>` at Implement), `base` (`auto` or an explicit branch — prefer explicit for a stable default), `branch_from` (`remote` = branch off fresh `origin/<base>`; `local` = local base ref), `push`, `cleanup` (`on_merge | off`), `delete_remote`
 - **`memory`** — `graph: auto|on|off`, `refresh: on_ship|manual`
 
 Manage these with **`/jig config`**: `show` (view all), `get <key>`, `set <key> <value>` (validates and preserves comments), and `check` (validate — exits non-zero on errors, so it works in CI).

@@ -7,10 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Changed
+### Added
+- `git.branch_from` config key (`remote` | `local`, default `remote`): Implement branches off
+  a fresh `origin/<base>` by default, or the local `<base>` ref. Falls back to `local` (with a
+  note) when the remote is unreachable.
 
+### Changed
+- Implement now enforces a per-track **starting-point gate** before creating the feature branch
+  (STOP on full/fast, warn on hotfix) when the tree is dirty outside `.jig/` or HEAD is detached.
 - Release notes are now sourced from this `CHANGELOG.md` (the Release workflow publishes
   the tagged version's section as the release body), instead of auto-generated commit lists.
+
+### Fixed
+- Implement cut the feature branch with a bare `git checkout -b`, which branched off whatever
+  HEAD happened to be (e.g. a prior task's branch after a push) instead of the resolved base.
+  It now branches from the resolved/fresh base explicitly.
 
 ## [0.4.0] - 2026-07-08
 
