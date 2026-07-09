@@ -22,16 +22,32 @@ Record the chosen mode in `progress.md`.
 2. **Create the feature branch** (per `.jig/config.yml` `git.branch`, default `true`).
    Skip this step entirely in a non-git repo or when `git.branch: false`, and note "worked on
    the current branch" in `progress.md`. Otherwise:
-   - Resolve the base branch: use `git.base` if set; else the repo default via
+   - **Resolve the base branch:** use `git.base` if set; else the repo default via
      `git symbolic-ref --short refs/remotes/origin/HEAD` (strip the `origin/` prefix); else the
-     current branch name.
-   - Ensure the working tree has no changes **outside `.jig/`**. When `.jig/` is tracked,
-     outstanding bookkeeping from Intake/Spec & Plan is expected — it rides onto the new branch
-     and folds into the first commit below. Check `git status --porcelain`; if any dirty path is
-     **not** under `.jig/`, STOP and ask the developer to commit or stash — do not auto-stash.
-   - Create and check out the branch off the base: `git checkout -b <type>/<slug>`. The name is
-     `<task type>/<task slug>` — e.g. `feature/add-oauth-login` (see `scripts/lib/git.mjs`
-     `branchName`).
+     current branch name. The remote is `origin`. Prefer an explicit `git.base` (e.g. `main`):
+     when `base: auto` and `origin/HEAD` isn't set locally (some clones / fresh CI), the chain
+     falls back to the *current* branch — which, right after a push, is the just-worked feature
+     branch, silently stacking the next task on unmerged work.
+   - **Starting-point gate.** Detect repo-state anomalies before cutting the branch:
+     - **Dirty tree outside `.jig/`:** run `git status --porcelain`; any dirty path **not** under
+       `.jig/` is an anomaly. (When `.jig/` is tracked, outstanding bookkeeping from Intake/Spec &
+       Plan is expected — it rides onto the new branch and folds into the first commit below.)
+     - **Detached HEAD:** `git symbolic-ref -q HEAD` exits non-zero ⇒ anomaly.
+
+     On any anomaly, act by the task's `track` (from `state.json`):
+     - **full / fast:** **STOP** and ask the developer to commit/stash or switch to a branch.
+       Do **not** auto-stash and do **not** auto-proceed.
+     - **hotfix:** note the anomaly in `progress.md` and proceed.
+   - **Cut the branch from the resolved base** per `git.branch_from` (default `remote`). The name
+     is `<task type>/<task slug>` — e.g. `feature/add-oauth-login` (see `scripts/lib/git.mjs`
+     `branchName`):
+     - **`remote`:** fetch then branch off the remote-tracking ref —
+       `git fetch origin <base>` then `git checkout -b <type>/<slug> origin/<base>`
+       (see `fetchBaseCmd` / `checkoutFromCmd`). If the fetch fails or `origin/<base>` doesn't
+       exist (offline, or the base is local-only), **fall back to `local`**, note the fallback in
+       `progress.md`, and continue.
+     - **`local`:** branch off the local base ref — `git checkout -b <type>/<slug> <base>`
+       (see `checkoutFromCmd`).
    - Record it: `node "<SKILL_DIR>/scripts/set-state.mjs" "<taskDir>" field branch <type>/<slug>`
      then `node "<SKILL_DIR>/scripts/set-state.mjs" "<taskDir>" field base <base>`.
 3. For each Step in order:

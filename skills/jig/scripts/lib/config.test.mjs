@@ -125,3 +125,19 @@ test('applySet targets a legacy git.track_sdlc line via either key name', () => 
   // ...and the current key name resolves to the same physical line.
   assert.equal(applySet(before, 'git.track_state', 'true'), 'git:\n  track_sdlc: true\n');
 });
+
+test('validate flags git.branch_from that is not remote or local', () => {
+  const results = validate(parseConfig('git:\n  branch_from: sideways\n'));
+  const hit = results.find((x) => x.key === 'git.branch_from');
+  assert.equal(hit.level, 'err');
+  assert.match(hit.note, /remote, local/); // enum note, not "unknown key"
+});
+
+test('applySet writes git.branch_from and rejects an invalid value', () => {
+  const next = applySet(templateText, 'git.branch_from', 'local');
+  assert.equal(getValue(parseConfig(next), 'git.branch_from'), 'local');
+  assert.throws(
+    () => applySet(templateText, 'git.branch_from', 'sideways'),
+    /expected remote, local/,
+  );
+});
