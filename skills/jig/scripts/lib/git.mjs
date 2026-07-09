@@ -23,3 +23,16 @@ export function prStateCmd(pr) {
 export function branchMergedCmd(branch, base) {
   return `git merge-base --is-ancestor ${branch} ${base}`;
 }
+
+// Fetch a single base branch from the remote before cutting a feature branch.
+export function fetchBaseCmd(remote, base) {
+  if (!remote || !base) throw new Error('fetchBaseCmd requires a remote and base');
+  return `git fetch ${remote} ${base}`;
+}
+
+// Create and check out <name> from an explicit start-point:
+// a local base ref (e.g. "main") or a remote-tracking ref (e.g. "origin/main").
+export function checkoutFromCmd(name, startPoint) {
+  if (!name || !startPoint) throw new Error('checkoutFromCmd requires a branch name and start-point');
+  return `git checkout -b ${name} ${startPoint}`;
+}
