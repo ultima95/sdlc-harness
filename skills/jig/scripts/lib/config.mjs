@@ -23,6 +23,7 @@ export const SCHEMA = {
   'git.track_state':   { type: 'bool' },
   'git.branch':        { type: 'bool' },
   'git.base':          { type: 'string' },
+  'git.branch_from':   { type: 'enum', allowed: ['remote', 'local'] },
   'git.push':          { type: 'bool' },
   'git.cleanup':       { type: 'enum', allowed: ['on_merge', 'off'] },
   'git.delete_remote': { type: 'bool' },

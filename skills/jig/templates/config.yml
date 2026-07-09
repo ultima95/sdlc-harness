@@ -28,7 +28,8 @@ ship:
 git:
   track_state: true        # commit .jig/ state alongside code (chosen at init); false = gitignore it, local-only
   branch:  true           # create a feature branch <type>/<slug> at Implement; false = current branch
-  base:    auto           # auto = detect origin/HEAD; or explicit "main" / "dev"
+  base:    auto           # auto = detect origin/HEAD; prefer an explicit "main" / "dev" for a stable default
+  branch_from: remote     # remote = fetch & branch off <remote>/<base> (latest upstream); local = local <base> ref
   push:    true           # push the branch during Ship
   cleanup: on_merge       # on_merge = /jig cleanup deletes after a verified merge; off = never
   delete_remote: true     # on cleanup, also delete the remote branch
